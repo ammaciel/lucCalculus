@@ -443,5 +443,3 @@ ggplot(df) + geom_bar(aes(x,fill=x)) +
 dfTab$lab <- paste(dfTab$Freq,paste("(",dfTab$lab,"%)",sep=""),sep=" ")
 
 
-
-
