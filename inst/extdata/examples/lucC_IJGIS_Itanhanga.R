@@ -19,14 +19,9 @@ file
 timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
 timeline
 
-#library(sits)
-# create a RasterBrick metadata file based on the information about the files
-raster.tb <- sits::sits_coverage(files = file, name = "Itanhanga", timeline = timeline, bands = "ndvi")
-raster.tb
-
 # new variable
-rb_sits <- raster.tb$r_objs[[1]][[1]]
-rb_sits
+rb_class <- raster::brick(file)
+rb_class
 
 
 # ------------- define variables to plot raster -------------
@@ -41,37 +36,37 @@ colors_1 <- c("#BEEE53", "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#afe3c8", 
 colors_1
 
 # plot raster brick
-lucC_plot_raster(raster_obj = rb_sits,
+lucC_plot_raster(raster_obj = rb_class,
                  timeline = timeline, label = label,
                  custom_palette = TRUE, RGB_color = colors_1, plot_ncol = 5)
 
 # change pixel of water by Cerrado, because this class doesn't exist in this municipality
-rb_sits <- raster::reclassify(rb_sits, cbind(15, 1))
-rb_sits
+rb_class <- raster::reclassify(rb_class, cbind(15, 1))
+rb_class
 
-lucC_plot_raster(raster_obj = rb_sits,
+lucC_plot_raster(raster_obj = rb_class,
                  timeline = timeline, label = label,
                  custom_palette = TRUE, RGB_color = colors_1, plot_ncol = 5)
 
 # select some layers
-rb_sits
+rb_class
 layers <- c(1, 3, 5, 7, 9, 11, 13, 15)
-rb_sits_2years <- raster::subset(rb_sits, layers)
-rb_sits_2years
+rb_class_2years <- raster::subset(rb_class, layers)
+rb_class_2years
 
 # create timeline with classified data from SVM method
 timeline_n <- lubridate::as_date(c("2001-09-01", "2003-09-01", "2005-09-01", "2007-09-01", "2009-09-01", "2011-09-01", "2013-09-01", "2015-09-01"))
 timeline_n
 
 png(filename = "~/Desktop/fig_TESE/fig_ita_land_use2D.png", width = 6.7, height = 5.4, units = 'in', res = 300)
-lucC_plot_raster(raster_obj = rb_sits_2years,
+lucC_plot_raster(raster_obj = rb_class_2years,
                  timeline = timeline_n, label = label,
                  custom_palette = TRUE, RGB_color = colors_1, plot_ncol = 3,
                  relabel = TRUE, original_labels = c("Cerrado", "Double_cropping", "Single_cropping", "Forest", "Pasture"), new_labels =  c("Degradation", "Double cropping", "Single cropping", "Forest", "Pasture") )
 dev.off()
 
 # number of cells
-myraster <- rb_sits_2years$rasterItanhangaSecVeg.1
+myraster <- rb_class_2years$rasterItanhangaSecVeg.1
 length(myraster[raster::values(myraster)!="NA"] )
 
 #----------------------------
@@ -81,7 +76,7 @@ length(myraster[raster::values(myraster)!="NA"] )
 #----------------------------
 
 system.time(
-  forest_recur <- lucC_pred_recur(raster_obj = rb_sits, raster_class = "Forest",
+  forest_recur <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
                                   time_interval1 = c("2001-09-01","2001-09-01"),
                                   time_interval2 = c("2002-09-01","2016-09-01"),
                                   label = label, timeline = timeline)
@@ -98,14 +93,14 @@ head(forest_sec)
 lucC_plot_bar_events(forest_re, custom_palette = FALSE, pixel_resolution = 232, legend_text = "Legend:")
 
 # 5. Plot secondary vegetation over raster without column 2001 because it' is not used to replace pixels's only support column
-lucC_plot_raster_result(raster_obj = rb_sits,
+lucC_plot_raster_result(raster_obj = rb_class,
                         data_mtx = forest_re,
                         timeline = timeline,
                         label = label, custom_palette = TRUE,
                         RGB_color = colors_1, relabel = FALSE, shape_point = ".")
 # Save results
 # create images output
-# lucC_save_raster_result(raster_obj = rb_sits,
+# lucC_save_raster_result(raster_obj = rb_class,
 #                         data_mtx = forest_re,       # without 2001
 #                         timeline = timeline, label = label, path_raster_folder = "~/Desktop/rasterItanhanga_RECUR", as_RasterBrick = FALSE)
 
@@ -123,7 +118,7 @@ classes <- as.character(c("Cerrado", "Double_cropping", "Single_cropping", "Past
 system.time(
   for(i in seq_along(classes)){
     print(classes[i])
-    temp <- lucC_pred_evolve(raster_obj = rb_sits, raster_class1 = classes[i],
+    temp <- lucC_pred_evolve(raster_obj = rb_class, raster_class1 = classes[i],
                              time_interval1 = c("2001-09-01","2001-09-01"), relation_interval1 = "equals",
                              raster_class2 = "Forest",
                              time_interval2 = c("2002-09-01","2016-09-01"), relation_interval2 = "contains",
@@ -146,14 +141,14 @@ head(forest_ev)
 lucC_plot_bar_events(forest_ev, custom_palette = FALSE, pixel_resolution = 232, legend_text = "Legend:")
 
 # 5. Plot secondary vegetation over raster without column 2001 because it' is not used to replace pixels's only support column
-lucC_plot_raster_result(raster_obj = rb_sits,
+lucC_plot_raster_result(raster_obj = rb_class,
                         data_mtx = forest_evolve, # forest_ev,
                         timeline = timeline,
                         label = label, custom_palette = TRUE,
                         RGB_color = colors_1, relabel = FALSE, shape_point = ".", plot_ncol = 4)
 # Save results
 # create images output
-# lucC_save_raster_result(raster_obj = rb_sits,
+# lucC_save_raster_result(raster_obj = rb_class,
 #                         data_mtx = forest_ev,       # without 2001
 #                         timeline = timeline, label = label, path_raster_folder = "~/Desktop/rasterItanhanga_EVOLVE", as_RasterBrick = FALSE)
 #
@@ -186,7 +181,7 @@ dev.off()
 
 
 # 5. Plot secondary vegetation over raster without column 2001 because it' is not used to replace pixels's only support column
-lucC_plot_raster_result(raster_obj = rb_sits,
+lucC_plot_raster_result(raster_obj = rb_class,
                         data_mtx = forest_sec,
                         timeline = timeline,
                         label = label, custom_palette = TRUE,
@@ -215,8 +210,8 @@ raster.tb <- sits::sits_coverage(files = file, name = "Itanhanga", timeline = ti
 raster.tb
 
 # new variable
-rb_sits3 <- raster.tb$r_objs[[1]][[1]]
-rb_sits3
+rb_class3 <- raster.tb$r_objs[[1]][[1]]
+rb_class3
 
 
 # ------------- define variables to plot raster -------------
@@ -230,7 +225,7 @@ label
 colors_1 <- c("#b3cc33", "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#afe3c8",  "#64b376", "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", "#e5a352", "#0000ff", "#3a3aff")
 colors_1
 
-lucC_plot_raster(raster_obj = rb_sits3,
+lucC_plot_raster(raster_obj = rb_class3,
                  timeline = timeline, label = label,
                  custom_palette = FALSE, RGB_color = colors_1, plot_ncol = 3)
 
@@ -264,8 +259,8 @@ raster.tb <- sits::sits_coverage(files = file, name = "ItaVegSec", timeline = ti
 raster.tb
 
 # new variable
-rb_sits2 <- raster.tb$r_objs[[1]][[1]]
-rb_sits2
+rb_class2 <- raster.tb$r_objs[[1]][[1]]
+rb_class2
 
 # new class Seconary vegetation
 label2 <- as.character(c("Cerrado", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water", "Secondary_vegetation"))
@@ -275,7 +270,7 @@ label2
 colors_2 <- c("#b3cc33", "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "green", "#afe3c8", "#64b376", "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", "#e5a352", "#0000ff", "#3a3aff")
 
 # plot raster brick
-lucC_plot_raster(raster_obj = rb_sits2,
+lucC_plot_raster(raster_obj = rb_class2,
                  timeline = timeline, label = label2,
                  custom_palette = TRUE, RGB_color = colors_2, plot_ncol = 6)
 
@@ -305,7 +300,7 @@ system.time(
     # moves across all classes
     for(i in seq_along(classes)){
       cat(classes[i], collapse = " ", "\n")
-      temp <- lucC_pred_convert(raster_obj = rb_sits2, raster_class1 = class1,
+      temp <- lucC_pred_convert(raster_obj = rb_class2, raster_class1 = class1,
                                 time_interval1 = c(t_1,t_1), relation_interval1 = "equals",
                                 raster_class2 = classes[i],
                                 time_interval2 = c(t_2,t_2), relation_interval2 = "equals",
@@ -336,14 +331,14 @@ lucC_plot_frequency_events(data_mtx = direct_transi.df,
 lucC_plot_bar_events(direct_transi.df, custom_palette = FALSE, pixel_resolution = 232, legend_text = "Legend:", side_by_side = TRUE)
 
 # 5. Plot secondary vegetation over raster without column 2001 because it' is not used to replace pixels's only support column
-lucC_plot_raster_result(raster_obj = rb_sits,
+lucC_plot_raster_result(raster_obj = rb_class,
                         data_mtx = direct_transi.df, # forest_ev,
                         timeline = timeline,
                         label = label, custom_palette = TRUE,
                         RGB_color = colors_1, relabel = FALSE, shape_point = ".", plot_ncol = 4)
 # Save results
 # create images output
-lucC_save_raster_result(raster_obj = rb_sits,
+lucC_save_raster_result(raster_obj = rb_class,
                         data_mtx = direct_transi.df,       # without 2001
                         timeline = timeline, label = label, path_raster_folder = "~/Desktop/rasterItanhanga_CONVERT", as_RasterBrick = FALSE)
 
