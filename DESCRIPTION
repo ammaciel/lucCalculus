@@ -1,0 +1,31 @@
+Package: lucCalculus
+Type: Package
+Title: Land Use Change Calculus
+Version: 0.6.04
+Date: 2018-03-10
+Authors@R: person("Adeline", "Maciel", role = c("aut", "cre"), email = "adelsud6@gmail.com")
+Author: Adeline Maciel [aut, cre]
+Maintainer: Adeline Maciel <adelsud6@gmail.com>
+Description: Land Use Change Calculus (lucCalculus) search for events in classified maps from remote sensing data. With this formalism is possible to discover if exist a particular event in data set.
+License: file LICENSE
+LazyData: TRUE
+Depends: R (>= 3.1.2)
+RoxygenNote: 6.1.0
+Imports: dplyr,
+      ensurer,
+      ggplot2,
+      grDevices,
+      lubridate,
+      magrittr,
+      plyr,
+      raster,
+      RColorBrewer,
+      reshape2,
+      scales,
+      stats,
+      tidyr,
+      utils
+Remotes:
+      e-sensing/sits
+URL: https://github.com/ammaciel/lucCalculus
+BugReports: https://github.com/ammaciel/lucCalculus
