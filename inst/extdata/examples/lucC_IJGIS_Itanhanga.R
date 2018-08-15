@@ -16,7 +16,7 @@ file <- c("inst/extdata/raster/rasterItanhanga.tif")
 file
 
 # create timeline with classified data from SVM method
-timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
+timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
 timeline
 
 # new variable
@@ -85,6 +85,8 @@ system.time(
 head(forest_recur)
 
 lucC_plot_bar_events(forest_recur, custom_palette = FALSE, pixel_resolution = 232, legend_text = "Legend:")
+
+
 
 # 4. Remove column 2001 because it' is not used to replace pixels's only support column
 forest_re <- lucC_remove_columns(data_mtx = forest_recur, name_columns = c("2001-09-01"))
