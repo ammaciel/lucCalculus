@@ -2,13 +2,13 @@ library(lucCalculus)
 
 
 #----------------------------
-# 1- Open idividual images and create a RasterBrick with each one and metadata ith SITS
+# 1- Open idividual images
 #----------------------------
 
 # create a RasterBrick from individual raster saved previously
 lucC_create_RasterBrick(path_open_GeoTIFFs = "inst/extdata/raster/rasterJuruena", path_save_RasterBrick = "inst/extdata/raster")
 
-# ------------- define variables to use in sits -------------
+# ------------- define variables to use -------------
 # open files
 file <- c("inst/extdata/raster/rasterJuruena.tif")
 file
@@ -17,13 +17,8 @@ file
 timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
 timeline
 
-#library(sits)
-# create a RasterBrick metadata file based on the information about the files
-raster.tb <- sits::sits_coverage(files = file, name = "Juruena", timeline = timeline, bands = "ndvi")
-raster.tb
-
 # new variable
-rb_Juruena <- raster.tb$r_objs[[1]][[1]]
+rb_Juruena <- raster::brick(file)
 rb_Juruena
 
 
@@ -120,13 +115,13 @@ lucC_save_GeoTIFF(raster_obj = rb_Juruena,
 
 #===================================================================================================
 #----------------------------
-# 4- Open idividual images reclassified and create a RasterBrick with each one and metadata ith SITS
+# 4- Open idividual images reclassified
 #----------------------------
 
 # create a RasterBrick from individual raster saved previously
 lucC_create_RasterBrick(path_open_GeoTIFFs = "inst/extdata/raster/rasterJuruenaSec", path_save_RasterBrick = "inst/extdata/raster")
 
-# ------------- define variables to use in sits -------------
+# ------------- define variables -------------
 # open files with new pixel secondary vegetation
 file <- c("inst/extdata/raster/rasterJuruenaSec.tif")
 file
@@ -135,13 +130,8 @@ file
 timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
 timeline
 
-#library(sits)
-# create a RasterBrick metadata file based on the information about the files
-raster.tb <- sits::sits_coverage(files = file, name = "JuruenaSecVeg", timeline = timeline, bands = "ndvi")
-raster.tb
-
 # new variable
-rb_Juruena2 <- raster.tb$r_objs[[1]][[1]]
+rb_Juruena2 <- raster::brick(file)
 rb_Juruena2
 
 # new class Seconary vegetation
