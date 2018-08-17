@@ -9,7 +9,7 @@ Maintainer: Adeline Maciel <adelsud6@gmail.com>
 Description: Land Use Change Calculus (lucCalculus) search for events in classified maps from remote sensing data. With this formalism is possible to discover if exist a particular event in data set.
 License: file LICENSE
 LazyData: TRUE
-Depends: R (>= 3.1.2)
+Depends: R (>= 3.4)
 RoxygenNote: 6.1.0
 Encoding: UTF-8
 Imports: dplyr,
@@ -22,9 +22,12 @@ Imports: dplyr,
       raster,
       RColorBrewer,
       reshape2,
+      rgdal,
       scales,
       stats,
       tidyr,
       utils
+Suggests: 
+      roxygen2
 URL: https://github.com/e-sensing/lucCalculus
 BugReports: https://github.com/e-sensing/lucCalculus
