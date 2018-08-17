@@ -15,6 +15,7 @@ Encoding: UTF-8
 Imports: dplyr,
       ensurer,
       ggplot2,
+      git2r,
       grDevices,
       lubridate,
       magrittr,
