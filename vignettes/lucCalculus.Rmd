@@ -1,0 +1,42 @@
+---
+title: "lucCalculus: Land Use Change Calculus for Reasoning About Land Use Change Trajectories"
+author:
+- name: Adeline Maciel
+  affiliation: National Institute for Space Research (INPE), Brazil
+  email: adelsud6@gmail.com
+bibliography: ../inst/extdata/markdown/references.bib
+output:
+  html_document: 
+    df_print: paged
+  pdf_document: 
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+    template: ../inst/extdata/markdown/latex-ms.tex
+abstract: In this package, we present a formal spatiotemporal interval logic mechanism
+  extended from Allen’s interval temporal logic to the spatial context. The method
+  contributes with a tool to help scientists and policy makers to reason about land
+  use change. We use an interval-based approach to reason about land use changes trajectories
+  resulting in a formalism that allows users to express queries about the land use.
+  This `lucCalculus` is a open source R package for reasoning about land use change
+  trajectories.
+vignette: |
+  %\usepackage[utf8]{inputenc}
+  %\VignetteIndexEntry{lucCalculus: Land Use Change Calculus for Reasoning About Land Use Change Trajectories}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+```{r, include = FALSE}
+library(lucCalculus)
+```
+
+# Introduction
+Brazil, more than any other country in the world faces the challenge of balancing agricultural production and environmental protection [@Gil:2015]. Historically, forest conversion has begun with small-scale exploration, as subsistence agriculture, followed by consolidation within large-scale cattle ranching operations or abandonment to secondary forest [@Morton:2006]. But, in the last decade, the expansion of large-scale mechanised agriculture at the forest frontier has introduced as a potential new pathway for loss of forest [@Morton:2006]. This has generated a debate over the impact of pasture and cropland expansion to deforestation and, consequently, on the economy [@Arvor:2013]. Thus, we contributed to the scientific debate on the subject, as we propose methods for improving the extraction of information about land use change. 
+
+
+
+
+
+
+# References
+

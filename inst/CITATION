@@ -1,0 +1,13 @@
+citEntry(entry = "Manual",
+         title        = "{lucCalculus}: Land Use Change Calculus for Reasoning About Land Use Change Trajectories",
+         author       = personList(as.person("Adeline Maciel")),
+         organization = "INPE - National Institute for Space Research",
+         address      = "Sao Jose dos Campos, Brazil",
+         year         = "2018",
+         url          = "https://github.com/e-sensing/lucCalculus",
+
+         textVersion  =
+             paste("Adeline Maciel (2018).",
+                   "lucCalculus: Land Use Change Calculus for Reasoning About Land Use Change Trajectories.",
+                   "URL https://github.com/e-sensing/lucCalculus.")
+)

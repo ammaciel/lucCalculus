@@ -28,7 +28,9 @@ Imports: dplyr,
       stats,
       tidyr,
       utils
-Suggests: 
-      roxygen2
+Suggests: knitr, 
+      rmarkdown,
+      testthat
+VignetteBuilder: knitr      
 URL: https://github.com/e-sensing/lucCalculus
 BugReports: https://github.com/e-sensing/lucCalculus
