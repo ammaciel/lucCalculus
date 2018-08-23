@@ -63,6 +63,8 @@
 # parameters: o = locations, c = class of locations and t = time intervals
 lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interval = c("2000-01-01", "2004-01-01"), relation_interval = "contains", label = NULL, timeline = NULL){
 
+  options(digits = 12)
+
   if (!is.null(raster_obj) & !is.null(raster_class) & !is.null(label) & !is.null(timeline)) {
     rasterStack_obj <- raster_obj
     class_name <- as.character(raster_class)

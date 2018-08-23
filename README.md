@@ -30,7 +30,9 @@ With package "lucCalculus" is possible to build questions using Allen's interval
 
  - Create a RasterBrick from a set of classified images
 
-<pre class="R"> library(lucCalculus)
+<pre class="R"> 
+library(lucCalculus)
+options(digits = 12)
 #-----------------------
 # 0. Open images and create a RasterBrick 
 #-----------------------
@@ -45,7 +47,9 @@ file <- paste0(getwd(),"/rasterItanhanga.tif")
 file
 
 # create timeline with classified data from SVM method
-timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
+timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", 
+              "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", 
+              "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
 timeline
 
 # new variable with raster object
@@ -53,11 +57,15 @@ rb_class <- raster::brick(file)
 
 # ------------- define variables to plot raster -------------
 # original label - see QML file, same order
-label <- c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water")
+label <- c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", 
+            "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", 
+            "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water")
 label
 
 # original colors set - see QML file, same order
-colors_1 <- c("#BEEE53", "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#afe3c8",  "#64b376", "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", "#e5a352", "#0000ff", "#3a3aff")
+colors_1 <- c("#BEEE53", "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#afe3c8",  "#64b376", 
+              "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", "#e5a352", 
+              "#0000ff", "#3a3aff")
 colors_1
 
 # plot rasterBrick
@@ -106,7 +114,9 @@ lucC_plot_sequence_events(c, custom_palette = FALSE, show_y_index = FALSE)
 lucC_plot_bar_events(c, custom_palette = FALSE, pixel_resolution = 232, side_by_side = TRUE)
 
 # plot RasterBrick with individual states over time
-lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = timeline, label = label, custom_palette = TRUE, RGB_color = colors_1, relabel = FALSE, shape_point = ".", plot_ncol = 4) 
+lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = timeline, 
+                        label = label, custom_palette = TRUE, RGB_color = colors_1, 
+                        relabel = FALSE, shape_point = ".", plot_ncol = 4) 
 </pre>
 
 <table width="700" border="0" cellspacing="0" cellpadding="0">
@@ -191,7 +201,9 @@ Fig. 4. Plot images classified from a RasterBrick and states from RECUR relation
 forest_evolve <- NULL
 
 # classes without Forest based on original label
-classes <- c("Degradation", "Double_cropping", "Single_cropping", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water")
+classes <- c("Degradation", "Double_cropping", "Single_cropping", "Pasture", "Pasture", 
+              "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", 
+              "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water")
 
 # percor all classes
 for(i in seq_along(classes)){
@@ -308,17 +320,24 @@ lucC_create_RasterBrick(path_open_GeoTIFFs = paste0(getwd(),"/rasterItanhangaSec
 file <- c(paste0(getwd(),"/rasterItanhangaSecVeg.tif"))
 
 # create timeline with classified data from SVM method
-timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
+timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", 
+              "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", 
+              "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
 
 # new variable with raster object
 rb_class2 <- raster::brick(file)
 
 # ------------- define variables to plot raster -------------
 # original label - see QML file, same order and new class secondary vegetation
-label2 <- c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water", "Secondary_vegetation")
+label2 <- c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", 
+            "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", 
+            "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water", 
+            "Secondary_vegetation")
 
 # original colors set - see QML file, same order
-colors_2 <- c("#BEEE53" , "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#1e174d", "#afe3c8", "#64b376", "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", "#e5a352", "#0000ff", "#3a3aff")
+colors_2 <- c("#BEEE53" , "#cd6155", "#e6b0aa", "#228b22", "#7ecfa4", "#1e174d", "#afe3c8", 
+              "#64b376", "#e1cdb6", "#b6a896", "#b69872", "#b68549", "#9c6f38", "#e5c6a0", 
+              "#e5a352", "#0000ff", "#3a3aff")
 
 # plot rasterBrick
 lucC_plot_raster(raster_obj = rb_class2,
@@ -460,7 +479,7 @@ for(x in 2:length(timeline)){
                               time_interval1 = c(t_1,t_1), relation_interval1 = "equals",
                               raster_class2 = classes[i],
                               time_interval2 = c(t_2,t_2), relation_interval2 = "equals",
-                              label = label2, timeline = timeline, remove_column = FALSE)
+                              label = label2, timeline = timeline)
     direct_transi.df <- lucC_merge(direct_transi.df, temp)
   }
   cat("\n")
@@ -474,7 +493,8 @@ str(Forest_others)
 lucC_plot_frequency_events(data_mtx = Forest_others,
                            pixel_resolution = 232, custom_palette = FALSE)
 
-lucC_plot_bar_events(Forest_others, custom_palette = FALSE, pixel_resolution = 232, legend_text = "Legend:", side_by_side = FALSE)
+lucC_plot_bar_events(Forest_others, custom_palette = FALSE, pixel_resolution = 232, 
+                      legend_text = "Legend:", side_by_side = FALSE)
 
 # replace classes by new legend
 Forest_others[c(3:ncol(Forest_others))] <- 
