@@ -43,18 +43,23 @@
 lucC_remove_columns <- function(data_mtx = NULL, name_columns = NULL){
 
   # Ensure if parameters exists
-  ensurer::ensure_that(data_mtx, !is.null(data_mtx),
-                       err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
+  # ensurer::ensure_that(data_mtx, !is.null(data_mtx),
+  #                      err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
   ensurer::ensure_that(name_columns, !is.null(name_columns),
                        err_desc = "name_columns must be defined! Enter names of columns to remove!")
   #
-  message(paste(c("Columns to remove: ", as.character(name_columns), "\t"), collapse="\n"))
+  message(paste(c("Columns removed: ", as.character(name_columns), "\t"), collapse="\n"))
 
-  # columns to delete
-  drops <- as.character(name_columns)
-  data_mtx_new <- data_mtx[ , !(names(data_mtx) %in% drops)]
-
-  return(data_mtx_new)
+  if (!is.null(data_mtx)){
+    # columns to delete
+    drops <- as.character(name_columns)
+    data_mtx_new <- data_mtx[ , !(names(data_mtx) %in% drops)]
+    return(data_mtx_new)
+  } else {
+    message(paste(c("Data set is empty! ", as.character(name_columns), "\t"), collapse="\n"))
+    data_mtx_new <- data_mtx
+    return(data_mtx_new)
+  }
 
 }
 

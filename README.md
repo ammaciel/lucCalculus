@@ -36,13 +36,12 @@ With package "lucCalculus" is possible to build questions using Allen's interval
 #-----------------------
 
 # create a RasterBrick from individual raster GeoTIFF classified previously
-lucC_create_RasterBrick(path_open_GeoTIFFs = system.file("extdata/raster/rasterItanhanga", 
-                        package = "lucCalculus"), 
-                        path_save_RasterBrick = system.file("extdata/raster", package = "lucCalculus"))
-
+lucC_create_RasterBrick(path_open_GeoTIFFs = c(system.file("extdata/raster/rasterItanhanga", package = "lucCalculus")),
+                        path_save_RasterBrick = getwd())
+                  
 # ------------- define variables to use in metadata -------------
 # open files
-file <- system.file("extdata/raster/rasterItanhanga.tif", package = "lucCalculus")
+file <- paste0(getwd(),"/rasterItanhanga.tif")
 file
 
 # create timeline with classified data from SVM method
@@ -54,7 +53,7 @@ rb_class <- raster::brick(file)
 
 # ------------- define variables to plot raster -------------
 # original label - see QML file, same order
-label <- as.character(c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water"))
+label <- c("Degradation", "Double_cropping", "Single_cropping", "Forest", "Pasture", "Pasture", "Pasture", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Double_cropping", "Single_cropping", "Single_cropping", "Water", "Water")
 label
 
 # original colors set - see QML file, same order
@@ -155,7 +154,8 @@ Fig. 3. Plot images classified from a RasterBrick and states from Before relatio
 forest_recur <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
                                 time_interval1 = c("2001-09-01","2001-09-01"),
                                 time_interval2 = c("2002-09-01","2016-09-01"),
-                                label = label, timeline = timeline)
+                                label = label, timeline = timeline, 
+                                remove_column = FALSE)
 head(forest_recur)
 
 #-------------------
@@ -200,7 +200,7 @@ for(i in seq_along(classes)){
                              time_interval1 = c("2001-09-01","2001-09-01"), relation_interval1 = "equals",
                              raster_class2 = "Forest",
                              time_interval2 = c("2002-09-01","2016-09-01"), relation_interval2 = "contains",
-                             label = label, timeline = timeline)
+                             label = label, timeline = timeline, remove_column = FALSE)
     forest_evolve <- lucC_merge(forest_evolve, temp)
   }
 
@@ -296,15 +296,16 @@ lucC_plot_bar_events(data_mtx = rb_class_new, pixel_resolution = 232, custom_pal
 # 2. save the update matrix as GeoTIFF images
 lucC_save_GeoTIFF(raster_obj = rb_class,
                   data_mtx = rb_class_new,
-                  path_raster_folder = "~/rasterItanhangaSecVeg", 
+                  path_raster_folder = paste0(getwd(),"/rasterItanhangaSecVeg"), 
                   as_RasterBrick = FALSE)
 
 #------------
 # create a RasterBrick from individual raster GeoTIFF, case saved as separate layers in lucC_save_GeoTIFF, as_RasterBrick = FALSE
-lucC_create_RasterBrick(path_open_GeoTIFFs = "~/rasterItanhangaSecVeg", path_save_RasterBrick = "~/")
+lucC_create_RasterBrick(path_open_GeoTIFFs = paste0(getwd(),"/rasterItanhangaSecVeg"),
+                        path_save_RasterBrick = getwd())
 
 # open file RasterBrick
-file <- "~/rasterItanhangaSecVeg.tif"
+file <- c(paste0(getwd(),"/rasterItanhangaSecVeg.tif"))
 
 # create timeline with classified data from SVM method
 timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01")
@@ -459,13 +460,8 @@ for(x in 2:length(timeline)){
                               time_interval1 = c(t_1,t_1), relation_interval1 = "equals",
                               raster_class2 = classes[i],
                               time_interval2 = c(t_2,t_2), relation_interval2 = "equals",
-                              label = label2, timeline = timeline)
-    if (!is.null(temp)) {
-      tempP <- lucC_remove_columns(data_mtx = temp, name_columns = as.character(t_1))
-    } else{
-      tempP <- temp
-    }
-    direct_transi.df <- lucC_merge(direct_transi.df, tempP)
+                              label = label2, timeline = timeline, remove_column = FALSE)
+    direct_transi.df <- lucC_merge(direct_transi.df, temp)
   }
   cat("\n")
 }
@@ -488,7 +484,12 @@ Forest_others[c(3:ncol(Forest_others))] <-
             ifelse(Forest_others[c(3:ncol(Forest_others))] == "Single_cropping", "Forest_Single_cropping"
             , ""))))
 
-lucC_plot_bar_events(Forest_others, pixel_resolution = 231.6465, custom_palette = TRUE, RGB_color = c("#6e8b3d", "#a2cd5a", "#006400", "#b4eeb4"), legend_text = "Land use transitions:", relabel = TRUE, original_labels = c("Forest_Degradation", "Forest_Double_cropping", "Forest_Pasture", "Forest_Single_cropping"), new_labels = c("Degradation", "Forest to Double Cropping", "Forest to Pasture", "Forest to Single Cropping"), side_by_side = FALSE)
+lucC_plot_bar_events(Forest_others, pixel_resolution = 231.6465, custom_palette = TRUE, 
+                      RGB_color = c("#6e8b3d", "#a2cd5a", "#006400", "#b4eeb4"), 
+                      legend_text = "Land use transitions:", relabel = TRUE, 
+                      original_labels = c("Forest_Degradation", "Forest_Double_cropping", "Forest_Pasture", "Forest_Single_cropping"), 
+                      new_labels = c("Degradation", "Forest to Double Cropping", "Forest to Pasture", "Forest to Single Cropping"), 
+                      side_by_side = FALSE)
 
 </pre>
 

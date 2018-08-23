@@ -49,7 +49,7 @@ testthat::test_that("RECUR predicate", {
                                   label = my_label, timeline = my_timeline )
   testthat::expect_true(nrow(forest_recur) > 0)
   # 15 years (less 2001) and 2 columns with latitude and longitude
-  testthat::expect_true(ncol(forest_recur) == 17)
+  testthat::expect_equal(ncol(forest_recur), 17)
 
   # if does not remove the columns of first interval
   forest_recur <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
@@ -58,11 +58,11 @@ testthat::test_that("RECUR predicate", {
                                   label = my_label, timeline = my_timeline,
                                   remove_column = FALSE )
   # 16 years and 2 columns with latitude and longitude
-  testthat::expect_true(ncol(forest_recur) == 18)
+  testthat::expect_equal(ncol(forest_recur), 18)
 })
 
 
-testthat::test_that("RECUR predicate that does not allows overlapp and  first interval not occurs after second interval", {
+testthat::test_that("RECUR predicate that does not allows overlap and  first interval not occurs after second interval", {
   testthat::skip_on_cran()
   file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
   rb_class <- raster::brick(file)
@@ -110,7 +110,7 @@ testthat::test_that("EVOLVE predicate", {
                                     label = my_label, timeline = my_timeline )
   testthat::expect_true(nrow(output_evolve) > 0)
   # 15 years (less 2001) and 2 columns with latitude and longitude
-  testthat::expect_true(ncol(output_evolve) == 17)
+  testthat::expect_equal(ncol(output_evolve), 17)
 
   # if does not remove the columns of first interval
   output_evolve <- lucC_pred_evolve(raster_obj = rb_class, raster_class1 = "Forest",
@@ -120,11 +120,11 @@ testthat::test_that("EVOLVE predicate", {
                                     label = my_label, timeline = my_timeline,
                                     remove_column = FALSE)
   # 16 years and 2 columns with latitude and longitude
-  testthat::expect_true(ncol(output_evolve) == 18)
+  testthat::expect_equal(ncol(output_evolve), 18)
 })
 
 
-testthat::test_that("EVOLVE predicate that does not allows overlapp and first interval not occurs after second interval", {
+testthat::test_that("EVOLVE predicate that does not allows overlap and first interval not occurs after second interval", {
   testthat::skip_on_cran()
   file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
   rb_class <- raster::brick(file)
@@ -176,7 +176,7 @@ testthat::test_that("CONVERT predicate", {
                                     label = my_label, timeline = my_timeline )
   testthat::expect_true(nrow(output_convert) > 0)
   # 1 years (less 2001) and 2 columns with latitude and longitude
-  testthat::expect_true(ncol(output_convert) == 3)
+  testthat::expect_equal(ncol(output_convert), 3)
 
   # if does not remove the columns of first interval
   output_convert <- lucC_pred_convert(raster_obj = rb_class, raster_class1 = "Forest",
@@ -186,7 +186,7 @@ testthat::test_that("CONVERT predicate", {
                                     label = my_label, timeline = my_timeline,
                                     remove_column = FALSE)
   # 2 years and 2 columns with latitude and longitude - convert MEETS
-  testthat::expect_true(ncol(output_convert) == 4)
+  testthat::expect_equal(ncol(output_convert), 4)
 
   output_convert <- lucC_pred_convert(raster_obj = rb_class, raster_class1 = "Forest",
                                       time_interval1 = c("2001-09-01","2002-09-01"),
@@ -195,12 +195,12 @@ testthat::test_that("CONVERT predicate", {
                                       label = my_label, timeline = my_timeline,
                                       remove_column = FALSE )
   # 5 years and 2 columns with latitude and longitude - convert MEETS
-  testthat::expect_true(ncol(output_convert) == 7)
+  testthat::expect_equal(ncol(output_convert), 7)
 
 })
 
 
-testthat::test_that("CONVERT predicate that does not allows overlapp and first interval not occurs after second interval", {
+testthat::test_that("CONVERT predicate that does not allows overlap and first interval not occurs after second interval", {
   testthat::skip_on_cran()
   file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
   rb_class <- raster::brick(file)
@@ -216,9 +216,8 @@ testthat::test_that("CONVERT predicate that does not allows overlapp and first i
                                                            raster_class2 = "Degradation",
                                                            time_interval2 = c("2002-09-01","2002-09-01"),
                                                            label = my_label, timeline = my_timeline ))
-
   # with exist a gap between two intervals
-  testthat::expect_error(output_convert <- lucC_pred_convert(raster_obj = rb_class, raster_class1 = "Forest",
+  testthat::expect_message(output_convert <- lucC_pred_convert(raster_obj = rb_class, raster_class1 = "Forest",
                                                            time_interval1 = c("2001-09-01","2001-09-01"),
                                                            raster_class2 = "Degradation",
                                                            time_interval2 = c("2003-09-01","2007-09-01"),

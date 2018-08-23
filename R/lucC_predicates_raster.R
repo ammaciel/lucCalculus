@@ -325,18 +325,21 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
     result <- result[!duplicated(result), ]
 
     # remove first interval values of the output
-    if(remove_column == TRUE){
-      if(length(unique(time_interval1)) == 1)
-        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
-      else{
-        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
-        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
-      }
-    }else{
-      result <- result
-    }
-
-    return(result)
+    if (!is.null(result)){
+      # remove first interval values of the output
+      if(remove_column == TRUE){
+        if(length(unique(time_interval1)) == 1){
+          result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+          return(result)
+        } else {
+          values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+          result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+          return(result)
+        }
+      } else
+        return(result)
+    } else
+      return(result)
   } else {
     message("\nRelation RECUR cannot be applied!\n
          Second time interval must have more than two dates, i.e, 2002-2004.\n")
@@ -448,18 +451,21 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
     result <- result[!duplicated(result), ]
 
     # remove first interval values of the output
-    if(remove_column == TRUE){
-      if(length(unique(time_interval1)) == 1)
-        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
-      else{
-        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
-        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
-      }
-    }else{
-      result <- result
-    }
-
-    return(result)
+    if (!is.null(result)){
+      # remove first interval values of the output
+      if(remove_column == TRUE){
+        if(length(unique(time_interval1)) == 1){
+          result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+          return(result)
+        } else {
+          values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+          result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+          return(result)
+        }
+      } else
+        return(result)
+    } else
+      return(result)
   } else {
     message("\nRelation EVOLVE cannot be applied!\n")
     return(result <- NULL)
@@ -570,19 +576,21 @@ lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_inte
 
     result <- result[!duplicated(result), ]
 
-    # remove first interval values of the output
-    if(remove_column == TRUE){
-      if(length(unique(time_interval1)) == 1)
-        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
-      else{
-        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
-        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
-      }
-    }else{
-      result <- result
-    }
-
-    return(result)
+    if (!is.null(result)){
+      # remove first interval values of the output
+      if(remove_column == TRUE){
+        if(length(unique(time_interval1)) == 1){
+          result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+          return(result)
+        } else {
+          values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+          result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+          return(result)
+        }
+      } else
+        return(result)
+    } else
+      return(result)
   } else {
     message("\nRelation CONVERT cannot be applied!\n")
     return(result <- NULL)
