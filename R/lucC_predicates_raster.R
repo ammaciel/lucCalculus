@@ -225,7 +225,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' @usage lucC_pred_recur (raster_obj = NULL, raster_class = NULL,
 #' time_interval1 = c("2001-01-01", "2001-01-01"),
 #' time_interval2 = c("2002-01-01", "2005-01-01"),
-#' label = NULL, timeline = NULL)
+#' label = NULL, timeline = NULL, remove_column = TRUE)
 #'
 #' @param raster_obj       Raster. A raster stack with classified images
 #' @param raster_class     Character. Name of the class of interest, such as 'Forest', to research
@@ -233,6 +233,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' @param time_interval2   Interval. A second and non-overlapped time interval to verify if class is over or not
 #' @param label            Character Vector. All labels of each value of pixel from classified raster
 #' @param timeline         Character. A list of all dates of classified raster, timeline
+#' @param remove_column    Boolean. Remove matrix values relating to the first time interval, only values of second interval are returned. Default is TRUE
 #'
 #' @keywords datasets
 #' @return Matrix with all states which holds during a time interval
@@ -254,7 +255,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #'
 
 # RECUR(location, class1, interval1, interval2)
-lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), time_interval2 = c("2002-01-01", "2005-01-01"), label = NULL, timeline = NULL){
+lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), time_interval2 = c("2002-01-01", "2005-01-01"), label = NULL, timeline = NULL, remove_column = TRUE){
 
   if (!is.null(raster_obj) & !is.null(raster_class) & !is.null(label) & !is.null(timeline)) {
     rasterStack_obj <- raster_obj
@@ -323,6 +324,18 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
     result <- merge(res1 , res2.out, by=c("x","y"))
     result <- result[!duplicated(result), ]
 
+    # remove first interval values of the output
+    if(remove_column == TRUE){
+      if(length(unique(time_interval1)) == 1)
+        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+      else{
+        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+      }
+    }else{
+      result <- result
+    }
+
     return(result)
   } else {
     message("\nRelation RECUR cannot be applied!\n
@@ -347,7 +360,8 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' @usage lucC_pred_evolve (raster_obj = NULL, raster_class1 = NULL,
 #' time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",
 #' raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"),
-#' relation_interval2 = "contains", label = NULL, timeline = NULL)
+#' relation_interval2 = "contains", label = NULL, timeline = NULL,
+#' remove_column = TRUE)
 #'
 #' @param raster_obj         Raster. A raster stack with classified images
 #' @param raster_class1      Character. Name of the first class of interest, such as 'Forest', to research
@@ -360,6 +374,7 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #'                           times 'contains'. Default is 'contains'
 #' @param label              Character Vector. All labels of each value of pixel from classified raster
 #' @param timeline           Character. A list of all dates of classified raster, timeline
+#' @param remove_column    Boolean. Remove matrix values relating to the first time interval, only values of second interval are returned. Default is TRUE
 #'
 #' @keywords datasets
 #' @return Matrix with all states which holds during a time interval
@@ -383,7 +398,7 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #'
 
 # EVOLVE(location, class1, interval1, class2, interval2) - USE BEFORE AND MEETS RELATIONS
-lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",  raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"), relation_interval2 = "contains", label = NULL, timeline = NULL){
+lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",  raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"), relation_interval2 = "contains", label = NULL, timeline = NULL, remove_column = TRUE){
 
   if (!is.null(raster_obj) & !is.null(raster_class1) & !is.null(raster_class2)
       & !is.null(label) & !is.null(timeline)) {
@@ -432,6 +447,18 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 
     result <- result[!duplicated(result), ]
 
+    # remove first interval values of the output
+    if(remove_column == TRUE){
+      if(length(unique(time_interval1)) == 1)
+        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+      else{
+        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+      }
+    }else{
+      result <- result
+    }
+
     return(result)
   } else {
     message("\nRelation EVOLVE cannot be applied!\n")
@@ -456,7 +483,8 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 #' @usage lucC_pred_convert (raster_obj = NULL, raster_class1 = NULL,
 #' time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",
 #' raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"),
-#' relation_interval2 = "equals", label = NULL, timeline = NULL)
+#' relation_interval2 = "equals", label = NULL, timeline = NULL,
+#' remove_column = TRUE)
 #'
 #' @param raster_obj         Raster. A raster stack with classified images
 #' @param raster_class1      Character. Name of the first class of interest, such as 'Forest', to research
@@ -469,6 +497,7 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 #'                           times 'contains'. Default is 'equals'
 #' @param label              Character Vector. All labels of each value of pixel from classified raster
 #' @param timeline           Character. A list of all dates of classified raster, timeline
+#' @param remove_column    Boolean. Remove matrix values relating to the first time interval, only values of second interval are returned. Default is TRUE
 #'
 #' @keywords datasets
 #' @return Matrix with all states which holds during a time interval
@@ -492,7 +521,7 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 #'
 
 # CONVERT(location, class1, interval1, class2, interval2) - USE ONLY MEETS RELATION
-lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",  raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"), relation_interval2 = "equals", label = NULL, timeline = NULL){
+lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",  raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"), relation_interval2 = "equals", label = NULL, timeline = NULL, remove_column = TRUE){
 
   if (!is.null(raster_obj) & !is.null(raster_class1) & !is.null(raster_class2)
       & !is.null(label) & !is.null(timeline)) {
@@ -540,6 +569,18 @@ lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_inte
     result <- lucC_relation_meets(res1, res2)
 
     result <- result[!duplicated(result), ]
+
+    # remove first interval values of the output
+    if(remove_column == TRUE){
+      if(length(unique(time_interval1)) == 1)
+        result <- lucC_remove_columns(data_mtx = result, name_columns = unique(time_interval1))
+      else{
+        values <- timeline[ timeline >= time_interval1[1] & timeline <= time_interval1[2]]
+        result <- lucC_remove_columns(data_mtx = result, name_columns = values)
+      }
+    }else{
+      result <- result
+    }
 
     return(result)
   } else {

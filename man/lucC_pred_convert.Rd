@@ -8,7 +8,8 @@
 lucC_pred_convert (raster_obj = NULL, raster_class1 = NULL,
 time_interval1 = c("2001-01-01", "2001-01-01"), relation_interval1 = "equals",
 raster_class2 = NULL, time_interval2 = c("2002-01-01", "2005-01-01"),
-relation_interval2 = "equals", label = NULL, timeline = NULL)
+relation_interval2 = "equals", label = NULL, timeline = NULL,
+remove_column = TRUE)
 }
 \arguments{
 \item{raster_obj}{Raster. A raster stack with classified images}
@@ -30,6 +31,8 @@ times 'contains'. Default is 'equals'}
 \item{label}{Character Vector. All labels of each value of pixel from classified raster}
 
 \item{timeline}{Character. A list of all dates of classified raster, timeline}
+
+\item{remove_column}{Boolean. Remove matrix values relating to the first time interval, only values of second interval are returned. Default is TRUE}
 }
 \value{
 Matrix with all states which holds during a time interval

@@ -26,14 +26,15 @@ vignette: |
   %\VignetteIndexEntry{lucCalculus: Land Use Change Calculus for Reasoning About Land Use Change Trajectories}
   %\VignetteEngine{knitr::rmarkdown}
 ---
-```{r, include = FALSE}
-library(lucCalculus)
-```
+
 
 # Introduction
 Brazil, more than any other country in the world faces the challenge of balancing agricultural production and environmental protection [@Gil:2015]. Historically, forest conversion has begun with small-scale exploration, as subsistence agriculture, followed by consolidation within large-scale cattle ranching operations or abandonment to secondary forest [@Morton:2006]. But, in the last decade, the expansion of large-scale mechanised agriculture at the forest frontier has introduced as a potential new pathway for loss of forest [@Morton:2006]. This has generated a debate over the impact of pasture and cropland expansion to deforestation and, consequently, on the economy [@Arvor:2013]. Thus, we contributed to the scientific debate on the subject, as we propose methods for improving the extraction of information about land use change. 
 
-
+```{r}
+# load library
+library(lucCalculus)
+```
 
 
 

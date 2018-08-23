@@ -5,41 +5,33 @@ library(lucCalculus)
 #----------------------------
 
 # create a RasterBrick from individual raster GeoTIFF classified previously
-lucC_create_RasterBrick(path_open_GeoTIFFs = "inst/extdata/raster/raster_sample_MT", path_save_RasterBrick = "inst/extdata/raster")
+lucC_create_RasterBrick(path_open_GeoTIFFs = c(system.file("extdata/raster/rasterSample", package = "lucCalculus")),
+                        path_save_RasterBrick = getwd())
+
 
 # ------------- define variables to use in sits -------------
 # open files
-file <- c("inst/extdata/raster/raster_sample_MT.tif")
-file
+file <- paste0(getwd(),"/","rasterSample.tif")
 
-# create timeline with classified data from SVM method
-timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
-timeline
+# create timeline with classified data
+my_timeline <- lubridate::as_date(c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01", "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01", "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01", "2016-09-01"))
 
-# library(sits)
-# create a RasterBrick metadata file based on the information about the files
-raster.tb <- sits::sits_coverage(files = file, name = "Sample_region", timeline = timeline, bands = "ndvi")
-raster.tb
-
-# new variable with raster object
-rb_sits <- raster.tb$r_objs[[1]][[1]]
+# raster object
+rb_class <- raster::brick(file)
 
 # ------------- define variables to plot raster -------------
 # original label - see QML file, same order
-label <- as.character(c("Cerrado", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton", "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water"))
+my_label <- as.character(c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+                        "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water"))
 
 # original colors set - see QML file, same order
-colors_1 <- c("#b3cc33", "#8ddbec", "#228b22", "#afe3c8", "#b6a896", "#e1cdb6", "#e5c6a0", "#b69872", "#b68549", "#dec000", "#cc18b4", "#0000f1" )
+my_colors <- c("#b3cc33", "#8ddbec", "#228b22", "#afe3c8", "#b6a896", "#e1cdb6",
+            "#e5c6a0", "#b69872", "#b68549", "#dec000", "#cc18b4", "#0000f1" )
 
 # plot rasterBrick
-lucC_plot_raster(raster_obj = rb_sits,
-                 timeline = timeline, label = label,
-                 custom_palette = TRUE, RGB_color = colors_1, plot_ncol = 6)
-
-#-------------
-# # alter attributes using labels
-# rb_sits@data@attributes <- lapply(rb_sits@data@attributes, function(x)  {x <- data.frame(ID = c(1:length(label)), category = label)} )
-# rasterVis::levelplot(rb_sits, col.regions=colors) # par.settings=rasterVis::RdBuTheme
+lucC_plot_raster(raster_obj = rb_class,
+                 timeline = my_timeline, label = my_label,
+                 custom_palette = TRUE, RGB_color = my_colors, plot_ncol = 4)
 
 
 #----------------------------
@@ -47,15 +39,15 @@ lucC_plot_raster(raster_obj = rb_sits,
 #----------------------------
 
 #------------- tests - intervals before, meets and follows -- Allen's relations
-a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
                      time_interval = c("2001-09-01","2007-09-01"),
-                     relation_interval = "equals", label = label, timeline = timeline)
+                     relation_interval = "equals", label = my_label, timeline = my_timeline)
 a
 
 
-b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
                      time_interval = c("2012-09-01","2013-09-01"),
-                     relation_interval = "contains", label = label, timeline = timeline)
+                     relation_interval = "contains", label = my_label, timeline = my_timeline)
 b
 
 # before
@@ -69,21 +61,23 @@ c <- lucC_relation_before(a, b)
 #c <- lucC_relation_finished_by(a, b)
 #c <- lucC_relation_during(a, b)
 #c <- lucC_relation_equals(a, b)
-c
+
 lucC_plot_sequence_events(c, custom_palette = FALSE, show_y_index = FALSE)
 lucC_plot_bar_events(c, custom_palette = FALSE, pixel_resolution = 232, side_by_side = TRUE, legend_text = "Legend")
 
-lucC_plot_raster_result(raster_obj = rb_sits, data_mtx = c, timeline = timeline, label = label, custom_palette = TRUE, RGB_color = colors_1, relabel = FALSE) #, shape_point = "#")
+lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+                        label = my_label, custom_palette = TRUE,
+                        RGB_color = my_colors, relabel = FALSE) #, shape_point = "#")
 
 
 #----------------------------
 # 3- LUC Calculus - verify for secondary vegetation
 #----------------------------
 # 1. RECUR predicate indicates a class that appear again
-forest_recur <- lucC_pred_recur(raster_obj = rb_sits, raster_class = "Forest",
+forest_recur <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
                                     time_interval1 = c("2001-09-01","2001-09-01"),
                                     time_interval2 = c("2003-09-01","2016-09-01"),
-                                    label = label, timeline = timeline)
+                                    label = my_label, timeline = my_timeline)
 head(forest_recur)
 
 #-------------------
