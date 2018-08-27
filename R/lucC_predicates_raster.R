@@ -131,11 +131,11 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
   if (relation_allen == "equals" & ncol(longLatFromRaster) > 3) {
     longLatFromRaster.mtx <- longLatFromRaster[
       base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster))] &
-                !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) == length(3:ncol(longLatFromRaster)),]
+                      !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) == length(3:ncol(longLatFromRaster)),]
   } else if (relation_allen == "contains" & ncol(longLatFromRaster) > 3)  {
     longLatFromRaster.mtx <- longLatFromRaster[
       base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster))] &
-                !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) > 0,]
+                      !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) > 0,]
   } else if ((relation_allen == "equals" | relation_allen == "contains") & ncol(longLatFromRaster) == 3){
     longLatFromRaster.mtx <- longLatFromRaster[!(is.na(longLatFromRaster[, 3]) | longLatFromRaster[, 3] == 0), ]
   }
@@ -170,7 +170,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
   longLatFromRaster.mtx
 
   return(longLatFromRaster.mtx)
-}
+  }
 
 
 #' @title Build Intervals of Data with Raster
@@ -194,24 +194,24 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 
 .lucC_check_intervals <- function (first_int = NULL, second_int = NULL) {
 
-    # check if they are intervals and not overlaped
-    time_int1 <- lucC_interval(first_int[1],first_int[2])
-    time_int2 <- lucC_interval(second_int[1],second_int[2])
+  # check if they are intervals and not overlaped
+  time_int1 <- lucC_interval(first_int[1],first_int[2])
+  time_int2 <- lucC_interval(second_int[1],second_int[2])
 
-    if (!isTRUE(lubridate::int_overlaps(time_int1,time_int2))) {
-      first_interval <- first_int
-      second_interval <- second_int
-      # return a list with two valid values
-      output <- list(first_interval, second_interval)
+  if (!isTRUE(lubridate::int_overlaps(time_int1,time_int2))) {
+    first_interval <- first_int
+    second_interval <- second_int
+    # return a list with two valid values
+    output <- list(first_interval, second_interval)
 
-      return(output)
-    }
-    else {
-      stop("\nParameters:\n
+    return(output)
+  }
+  else {
+    stop("\nParameters:\n
          time_interval1 can not overlap time_interval2! \n\n")
-    }
+  }
 
-}
+  }
 
 
 #' @title Predicate Recur
@@ -296,7 +296,7 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
   # interval = rasters_intervals[[1]] (first interval), rasters_intervals[[2]] (second_interval)
   if (length(res1) == 0 | length(res2) == 0){
     message("\nRelation RECUR cannot be applied!\n
-         This class does not exist in the defined interval.\n")
+            This class does not exist in the defined interval.\n")
     return(result <- NULL)
   } else if( nrow(res1) > 0 & nrow(res2) > 0 & ncol(res2) > 4 ) {
     # 1. isolate only rows with NA
@@ -318,7 +318,14 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
       return(x)
     }
 
-    res2.out <- cbind(res2.1[,c(1:2)], t(apply(res2.1[,c(3:ncol(res2.1))], 1, .different_class)))
+    # verify if exist res2.1 has isolated elements
+    if(nrow(res2.1) > 0){
+      res2.out <- cbind(res2.1[,c(1:2)], t(apply(res2.1[,c(3:ncol(res2.1))], 1, .different_class)))
+    } else {
+      message("\nRelation RECUR cannot be applied!\n
+              Second time interval must does not has elements with recurrence \n")
+      return(result <- NULL)
+    }
 
     rm(res2.1)
     gc()
@@ -344,11 +351,11 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
       return(result)
   } else {
     message("\nRelation RECUR cannot be applied!\n
-         Second time interval must have more than two dates, i.e, 2002-2004.\n")
+            Second time interval must have more than two dates, i.e, 2002-2004.\n")
     return(result <- NULL)
   }
 
-}
+  }
 
 
 #' @title Predicate Evolve
@@ -444,7 +451,7 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
   # interval = rasters_intervals[[1]] (first interval), rasters_intervals[[2]] (second_interval)
   if (length(res1) == 0 | length(res2) == 0){
     message("\nRelation EVOLVE cannot be applied!\n
-         This class does not exist in the defined interval.\n")
+            This class does not exist in the defined interval.\n")
     return(result <- NULL)
   } else if( (nrow(res1) > 0)  & (nrow(res2) > 0) ) {
 
@@ -473,7 +480,7 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
     return(result <- NULL)
   }
 
-}
+  }
 
 
 
@@ -597,7 +604,7 @@ lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_inte
     message("\nRelation CONVERT cannot be applied!\n")
     return(result <- NULL)
   }
-}
+  }
 
 
 
