@@ -25,13 +25,13 @@ of the raster_1 must be (=) equal to the end time interval from raster_2. See mo
 \examples{
 \dontrun{
 
-a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
                      time_interval = c("2001-09-01","2015-09-01"),
                      relation_interval = "equals", label = label,
                      timeline = timeline)
 a
 
-b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
                      time_interval = c("2003-09-01","2015-09-01"),
                      relation_interval = "equals", label = label,
                      timeline = timeline)

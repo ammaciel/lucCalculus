@@ -8,7 +8,7 @@
 ##                                                             ##
 ##   R script to save raster in GeoTIFF format                 ##
 ##                                                             ##
-##                                             2018-03-01      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -37,10 +37,36 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' # save rasters in folder
-#' lucC_save_GeoTIFF (raster_obj_crs = rb_sits, data_mtx = new_raster,
-#' path_raster_folder = "~/Desktop/raster", as_RasterBrick = FALSE)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval1 = c("2001-09-01","2001-09-01"),
+#'                      time_interval2 = c("2002-09-01","2016-09-01"),
+#'                      label = my_label, timeline = my_timeline)
+#'
+#' # update original RasterBrick with new class
+#' num_label <- length(my_label) + 1
+#' rb_class_new <- lucC_raster_update(raster_obj = rb_class,
+#'                                    data_mtx = a,
+#'                                    timeline = my_timeline,
+#'                                    class_to_replace = "Forest",  # the same class previously
+#'                                    new_pixel_value = num_label)  # new pixel value
+#'
+#' lucC_plot_bar_events(data_mtx = rb_class_new, pixel_resolution = 232, custom_palette = FALSE)
+#'
+#' # save the update matrix as GeoTIFF RasterBrick
+#' lucC_save_GeoTIFF(raster_obj = rb_class, data_mtx = rb_class_new,
+#'                   path_raster_folder = paste0(getwd(), "/updatedRasterRECUR", sep = ""),
+#'                   as_RasterBrick = FALSE )
 #'
 #'}
 #'
@@ -129,10 +155,29 @@ lucC_save_GeoTIFF <- function(raster_obj = NULL, data_mtx = NULL, path_raster_fo
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' rb_new <- lucC_save_raster_result(raster_obj = rb_sits, data_mtx = third_raster.df,
-#' timeline = timeline, label = label, path_raster_folder = NULL, as_RasterBrick = FALSE)
-#' rb_new
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval1 = c("2001-09-01","2001-09-01"),
+#'                      time_interval2 = c("2002-09-01","2016-09-01"),
+#'                      label = my_label, timeline = my_timeline)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = a, timeline = my_timeline,
+#'                         label = my_label, custom_palette = FALSE)
+#' # save in file
+#' lucC_save_raster_result(raster_obj = rb_class, data_mtx = a,
+#'                         timeline = my_timeline, label = my_label,
+#'                         path_raster_folder = paste0(getwd(), "/onlyRECUR", sep = ""),
+#'                         as_RasterBrick = FALSE)
 #'
 #'}
 #'
@@ -241,121 +286,15 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 }
 
 
-# # plot maps for input data
-# lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline = NULL, label = NULL, path_raster_folder = NULL) {
-#
-#   # Ensure if parameters exists
-#   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-#                        err_desc = "raster_obj tibble, file must be defined!\nThis data can be obtained using lucC predicates holds or occurs.")
-#   ensurer::ensure_that(data_mtx, !is.null(data_mtx),
-#                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
-#   ensurer::ensure_that(timeline, !is.null(timeline),
-#                        err_desc = "timeline must be defined!")
-#   ensurer::ensure_that(path_raster_folder, !is.null(path_raster_folder),
-#                        err_desc = "path_raster_folder must be defined! Enter a path to SAVE your GeoTIFF images!")
-#
-#   options(digits = 12)
-#
-#   #-------------------- prepare rasterBrick --------------------------------
-#   # original raster
-#   df <- raster::rasterToPoints(raster_obj) %>%
-#     data.frame()
-#
-#   # replace colnames to timeline
-#   colnames(df)[c(3:ncol(df))] <- as.character(lubridate::year(timeline))
-#   #raster_df <- reshape2::melt(df, id.vars = c("x","y"))
-#   raster_df <- df %>%
-#     tidyr::gather(variable, value, -x, -y)
-#
-#   rm(df)
-#   gc()
-#
-#   # remove factor
-#   #raster_df$variable = as.character(levels(raster_df$variable))[raster_df$variable]
-#   raster_df$value = 0
-#
-#   #-------------------- prepare matrix with events --------------------------------
-#   # replace new clase by new pixel value
-#   class_name <- unique(data_mtx[3:ncol(data_mtx)][!duplicated(as.vector(data_mtx[3:ncol(data_mtx)])) & !is.na(data_mtx[3:ncol(data_mtx)])] )
-#
-#   class <- which(label %in% class_name)
-#   #data_mtx$x = as.numeric(as.character(data_mtx$x))
-#   #data_mtx$y = as.numeric(as.character(data_mtx$y))
-#   #data_mtx[3:ncol(data_mtx)] = as.character(as.character(data_mtx[3:ncol(data_mtx)]))
-#
-#   if(length(class_name) != length(class)) {
-#     class <- class[length(class_name)]
-#   } else {
-#     class <- class
-#   }
-#
-#   for( i in 1:length(class_name)){
-#     #data_mtx <- replace(data_mtx, data_mtx == class_name[i], class[i])
-#     #data_mtx[c(3:ncol(data_mtx))] <- replace(data_mtx[c(3:ncol(data_mtx))], data_mtx[c(3:ncol(data_mtx))] == class_name[i], class[i])
-#     data_mtx[c(3:ncol(data_mtx))] <- ifelse(data_mtx[c(3:ncol(data_mtx))] == class_name[i], class[i], NA)
-#   }
-#
-#   # data matrix to new raster
-#   new_df <- as.data.frame(data_mtx)
-#   colnames(new_df)[c(3:ncol(new_df))] <- as.character(lubridate::year(colnames(new_df)[c(3:ncol(new_df))]))
-#
-#   rm(data_mtx)
-#   gc()
-#
-#   # point_df <- reshape2::melt(new_df, id.vars = c("x","y")) %>%
-#   #   stats::na.omit()
-#   point_df <- new_df %>%
-#     tidyr::gather(variable, value, -x, -y) %>%
-#     stats::na.omit()
-#
-#   # remove factors
-#   point_df$x = as.numeric(as.character(point_df$x)) # as.numeric(levels(point_df$x))[point_df$x]
-#   point_df$y = as.numeric(as.character(point_df$y))
-#   point_df$variable = as.character(as.character(point_df$variable))
-#
-#   rm(new_df)
-#   gc()
-#   # ------------------ replace point_df in raster_df ---------------------
-#
-#   # replace in entire raster
-#   raster_df_temp <- base::merge(raster_df, point_df, by = c("x","y","variable"), all = TRUE) %>%
-#     dplyr::mutate(value = ifelse(!is.na(.$value.y), .$value.y, .$value.x)) %>%
-#     dplyr::select(-value.x, -value.y) %>%
-#     .[order(.$variable),]
-#
-#   rm(raster_df, point_df)
-#   gc()
-#
-#   # remove duplicated lines
-#   raster_df_temp <- raster_df_temp[!duplicated(raster_df_temp), ]
-#
-#   #raster_df_temp[is.na(raster_df_temp)] <- 0
-#
-#   #raster_df_update <- reshape2::dcast(raster_df_temp, x+y ~ variable, value.var= "value")
-#   raster_df_update <- raster_df_temp %>%
-#     tidyr::spread(variable, value)
-#
-#   colnames(raster_df_update)[c(3:ncol(raster_df_update))] <- as.character(timeline)
-#
-#   lucC_save_GeoTIFF(raster_obj = raster_obj, data_mtx = raster_df_update, path_raster_folder = path_raster_folder, as_RasterBrick = FALSE)
-#
-#   rm(raster_obj, raster_df_temp)
-#   gc()
-#
-#   return(raster_df_update)
-#
-# }
-
-
 #' @title Save a RasterBrick by layers
-#' @name lucC_save_rasterBrick_layers
-#' @aliases lucC_save_rasterBrick_layers
+#' @name lucC_save_rasterBrick_by_layers
+#' @aliases lucC_save_rasterBrick_by_layers
 #' @author Adeline M. Maciel
 #' @docType data
 #'
 #' @description Save a RasterBrick into individual layers files GeoTIFFs
 #'
-#' @usage lucC_save_rasterBrick_layers(path_name_GeoTIFF_Brick = NULL)
+#' @usage lucC_save_rasterBrick_by_layers(path_name_GeoTIFF_Brick = NULL)
 #'
 #' @param path_name_GeoTIFF_Brick  Character. Name file and path folder to SPLIT rasterBrick by layers
 #'
@@ -367,15 +306,27 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_save_raster_result(path_name_GeoTIFF_Brick =
-#' "/home/inpe/Desktop/TesteIta/Mosaic_Raster_Splitted_.tif")
+#' file <- c(system.file("extdata/raster/rasterItanhanga.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#'
+#' # blocks saved in folder
+#' lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2, save_images = TRUE)
+#'
+#' lucC_blocks_raster_merge(path_open_GeoTIFFs = paste0(getwd(), "/Blocks_RasterBrick", sep = ""),
+#'                          number_raster = 4, pattern_name = "Raster_Block_", is.rasterBrick = TRUE)
+#'
+#' lucC_save_rasterBrick_by_layers(
+#' path_name_GeoTIFF_Brick = paste0(getwd(),"/Blocks_RasterBrick/Mosaic_Raster_Block_.tif", sep = ""))
+#'
+#'
 #'
 #'}
 #'
 
 # plot maps for input data
-lucC_save_rasterBrick_layers <- function(path_name_GeoTIFF_Brick = NULL) {
+lucC_save_rasterBrick_by_layers <- function(path_name_GeoTIFF_Brick = NULL) {
 
   # Ensure if parameters exists
   ensurer::ensure_that(path_name_GeoTIFF_Brick, !is.null(path_name_GeoTIFF_Brick),
@@ -406,8 +357,7 @@ lucC_save_rasterBrick_layers <- function(path_name_GeoTIFF_Brick = NULL) {
   message("Saving... \n")
 
   # write as a geoTIFF file using the raster package by layer
-  raster::writeRaster(raster,
-                      filename= paste0(path_raster_folder,"/New_", sep = ""),
+  raster::writeRaster(raster, filename= paste0(path_raster_folder,"/New_", sep = ""),
                       bylayer=TRUE, suffix = names(raster), format="GTiff",
                       datatype="INT1U", overwrite=TRUE)
 

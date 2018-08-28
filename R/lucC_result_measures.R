@@ -9,7 +9,7 @@
 ##  R script to compute Frequqncy, Area, CumSum,               ##
 ##  Freqquency relative and Frequency Relative CumSum          ##
 ##  and prepare input data                                     ##
-##                                             2018-03-04      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -39,8 +39,23 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_result_measures(data_mtx = NULL, pixel_resolution = NULL)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' b <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval1 = c("2001-09-01","2001-09-01"),
+#'                      time_interval2 = c("2002-09-01","2016-09-01"),
+#'                      label = my_label, timeline = my_timeline)
+#'
+#' lucC_result_measures(data_mtx = b, pixel_resolution = 232)
 #'
 #'}
 #'
@@ -130,8 +145,34 @@ lucC_result_measures <- function(data_mtx = NULL, data_frequency = NULL, pixel_r
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_extract_frequency(data_mtx.list = NULL, cores_in_parallel = 1)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' # list empty to store the holds operations
+#' data.list <- list(NULL)
+#'
+#' data.list[[1]] <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
+#'                                   time_interval = c("2001-09-01","2016-09-01"),
+#'                                   label = my_label, timeline = my_timeline)
+#' data.list[[2]] <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#'                                   time_interval = c("2001-09-01","2016-09-01"),
+#'                                   label = my_label, timeline = my_timeline)
+#' data.list
+#'
+#' # extract frequency from list data
+#' d <- lucC_extract_frequency(data_mtx.list = data.list, cores_in_parallel = 2)
+#'
+#' # use the frequency extracted from list
+#' lucC_result_measures(data_frequency = d, pixel_resolution = 232)
+#'
 #'
 #'}
 #'

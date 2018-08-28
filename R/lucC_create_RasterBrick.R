@@ -8,7 +8,7 @@
 ##                                                             ##
 ##   R script to load GeoTIFF and saved as RasterBrick         ##
 ##                                                             ##
-##                                             2018-03-04      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -33,10 +33,12 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' # save RasterBrick in path
-#' lucC_create_RasterBrick (path_open_GeoTIFFs = "~/Desktop/raster",
-#'                          path_save_RasterBrick = "~/Desktop")
+#' # create a RasterBrick from individual raster GeoTIFF classified previously
+#' lucC_create_RasterBrick(path_open_GeoTIFFs =
+#'                         c(system.file("extdata/raster/rasterSample", package = "lucCalculus")),
+#'                         path_save_RasterBrick = getwd())
 #'
 #'}
 #'

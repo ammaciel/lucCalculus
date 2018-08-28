@@ -8,7 +8,7 @@
 ##                                                             ##
 ##   R script with extra Allen's relationships                 ##
 ##                                                             ##
-##                                             2018-02-28      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##  J. F. Allen.  Towards a general theory of action and       ##
 ##  time. Artificial Intelligence, 23(2): 123--154, 1984.      ##
@@ -64,13 +64,13 @@
 #'
 #' @examples \dontrun{
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval = c("2001-09-01","2003-09-01"),
 #'                      relation_interval = "equals", label = label,
 #'                      timeline = timeline)
 #' a
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
 #'                      time_interval = c("2001-09-01","2007-09-01"),
 #'                      relation_interval = "equals", label = label,
 #'                      timeline = timeline)
@@ -145,13 +145,13 @@ lucC_relation_in <- function (first_raster = NULL, second_raster = NULL) {
 #'
 #' @examples \dontrun{
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval = c("2001-09-01","2003-09-01"),
 #'                      relation_interval = "equals", label = label,
 #'                      timeline = timeline)
 #' a
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
 #'                      time_interval = c("2004-09-01","2007-09-01"),
 #'                      relation_interval = "equals", label = label,
 #'                      timeline = timeline)
@@ -223,13 +223,13 @@ lucC_relation_follows <- function (first_raster = NULL, second_raster = NULL) {
 #'
 #' @examples \dontrun{
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval = c("2004-09-01","2007-09-01"),
 #'                      relation_interval = "equals", label = label,
 #'                      timeline = timeline)
 #' a
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
 #'                      time_interval = c("2001-09-01","2003-09-01"),
 #'                      relation_interval = "contains", label = label,
 #'                      timeline = timeline)
@@ -279,7 +279,6 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 
 
 
-
 #' @title Allen Relation Occurs
 #' @name lucC_relation_occurs
 #' @aliases lucC_relation_same_interval
@@ -287,7 +286,7 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 #' @docType data
 #'
 #' @description Provide an interval relation OCCURS which asserts that classes
-#' of two distinct data set occurs in the same interval
+#' of two distinct data set occurs in the same interval, is an intersection
 #'
 #' @usage lucC_relation_occurs(first_raster = NULL, second_raster = NULL)
 #'
@@ -302,13 +301,13 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 #'
 #' @examples \dontrun{
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval = c("2001-09-01","2002-09-01"),
 #'                      relation_interval = "contains", label = label,
 #'                      timeline = timeline)
 #' a
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Pasture",
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
 #'                      time_interval = c("2001-09-01","2002-09-01"),
 #'                      relation_interval = "contains", label = label,
 #'                      timeline = timeline)
@@ -321,7 +320,7 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 #'
 
 #
-# 17. The 'lucC_relation_occurs'
+#  The 'lucC_relation_occurs'
 lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
 
   # check is data set are empty
@@ -406,13 +405,13 @@ lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
 #'
 #' @examples \dontrun{
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval = c("2001-09-01","2002-09-01"),
 #'                      relation_interval = "contains", label = label,
 #'                      timeline = timeline)
 #' a
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Pasture",
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
 #'                      time_interval = c("2001-09-01","2002-09-01"),
 #'                      relation_interval = "contains", label = label,
 #'                      timeline = timeline)
@@ -424,7 +423,7 @@ lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
 #'}
 #'
 
-# 17. The 'lucC_relation_occurs'
+# The 'lucC_merge'
 lucC_merge <- function (first_raster = NULL, second_raster = NULL) {
 
   # check is data set are empty
@@ -504,61 +503,4 @@ lucC_merge <- function (first_raster = NULL, second_raster = NULL) {
     return(result <- NULL)
   }
 }
-
-# # 17. The 'lucC_relation_occurs'
-# lucC_merge <- function (first_raster = NULL, second_raster = NULL) {
-#
-#   # check is data set are empty
-#   first_raster <- as.data.frame(first_raster)
-#   second_raster <- as.data.frame(second_raster)
-#
-#   if( isTRUE(nrow(first_raster) > 0) & isTRUE(nrow(second_raster) > 0)) {
-#     # first raster
-#     # first_raster <- reshape2::melt(as.data.frame(first_raster), id.vars = c("x","y"), na.rm = TRUE)
-#
-#     first_raster <- first_raster %>%
-#       tidyr::gather(variable, value, -x, -y)  %>%
-#       stats::na.omit()
-#
-#     # remove factors
-#     first_raster$x = as.numeric(as.character(first_raster$x))
-#     first_raster$y = as.numeric(as.character(first_raster$y))
-#     first_raster$variable = as.character(as.character(first_raster$variable))
-#
-#     # second raster
-#     #second_raster <- reshape2::melt(as.data.frame(second_raster), id.vars = c("x","y"), na.rm = TRUE)
-#     second_raster <- second_raster %>%
-#       tidyr::gather(variable, value, -x, -y)  %>%
-#       stats::na.omit()
-#
-#     # remove factors
-#     second_raster$x = as.numeric(as.character(second_raster$x))
-#     second_raster$y = as.numeric(as.character(second_raster$y))
-#     second_raster$variable = as.character(as.character(second_raster$variable))
-#
-#     # merge them
-#     result.temp <- dplyr::bind_rows(first_raster, second_raster)
-#     # remove duplicated lines
-#     result.temp <- result.temp[!duplicated(result.temp), ]
-#     # return matrix format
-#     #result <- reshape2::dcast(result.temp, x+y ~ variable, value.var= "value")
-#     result <- result.temp %>%
-#       tidyr::spread(variable, value)
-#
-#     if (nrow(result) > 0){
-#       return(result)
-#     } else {
-#       message("\nRelation MERGE cannot be applied!\n
-#           raster 1 and raster 2 has no relation!")
-#       return(result <- NULL)
-#     }
-#   } else if ( isTRUE(nrow(first_raster) > 0) | isTRUE(nrow(second_raster) > 0)) {
-#     result <- dplyr::bind_rows(first_raster, second_raster)
-#     return(result)
-#
-#   } else {
-#     return(result <- NULL)
-#   }
-# }
-
 

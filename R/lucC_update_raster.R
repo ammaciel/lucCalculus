@@ -8,7 +8,7 @@
 ##                                                             ##
 ##   R script to replace pixels in a ReasterBrick              ##
 ##                                                             ##
-##                                             2018-03-02      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -39,10 +39,31 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' rb_new <- lucC_raster_update(raster_obj = rb_sits, data_mtx = third_raster.df,
-#' timeline = timeline, class_to_replace = "Forest", new_pixel_value = 6)
-#' rb_new
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval1 = c("2001-09-01","2001-09-01"),
+#'                      time_interval2 = c("2002-09-01","2016-09-01"),
+#'                      label = my_label, timeline = my_timeline)
+#'
+#' # update original RasterBrick with new class
+#' num_label <- length(my_label) + 1
+#' rb_class_new <- lucC_raster_update(raster_obj = rb_class,
+#'                                    data_mtx = a,
+#'                                    timeline = my_timeline,
+#'                                    class_to_replace = "Forest",  # the same class previously
+#'                                    new_pixel_value = num_label)  # new pixel value
+#'
+#' lucC_plot_bar_events(data_mtx = rb_class_new, pixel_resolution = 232, custom_palette = FALSE)
 #'
 #'}
 #'
@@ -82,6 +103,7 @@ lucC_raster_update <- function(raster_obj = NULL, data_mtx = NULL, timeline = NU
   gc()
 
   #-------------------- prepare matrix with events --------------------------------
+  data_mtx <- as.data.frame(data_mtx)
   data_mtx$x <- as.factor(data_mtx$x)
   data_mtx$y <- as.factor(data_mtx$y)
 
@@ -159,101 +181,4 @@ lucC_raster_update <- function(raster_obj = NULL, data_mtx = NULL, timeline = NU
   return(raster_df_update)
 
 }
-
-# update pixel in maps
-# lucC_raster_update <- function(raster_obj = NULL, data_mtx = NULL, timeline = NULL, class_to_replace = NULL, new_pixel_value = 20) {
-#
-#   # Ensure if parameters exists
-#   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-#                        err_desc = "raster_obj tibble, file must be defined!\nThis data can be obtained using lucC predicates holds or occurs.")
-#   ensurer::ensure_that(data_mtx, !is.null(data_mtx),
-#                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
-#   ensurer::ensure_that(timeline, !is.null(timeline),
-#                        err_desc = "timeline must be defined!")
-#   ensurer::ensure_that(class_to_replace, !is.null(class_to_replace),
-#                        err_desc = "class_to_replace must be defined!")
-#
-#   #-------------------- prepare rasterBrick --------------------------------
-#   # original raster
-#   df <- raster::rasterToPoints(raster_obj) %>%
-#     data.frame()
-#
-#   rm(raster_obj)
-#   gc()
-#
-#   # replace colnames to timeline
-#   colnames(df)[c(3:ncol(df))] <- as.character(lubridate::year(timeline))
-#   #raster_df <- reshape2::melt(df, id.vars = c("x","y"))
-#   raster_df <- df %>%
-#     tidyr::gather(variable, value, -x, -y)
-#
-#   rm(df)
-#   gc()
-#
-#   # remove factor
-#   # raster_df$variable = as.character(levels(raster_df$variable))[raster_df$variable]
-#
-#   #-------------------- prepare matrix with events --------------------------------
-#   # data matrix to new raster
-#   new_df <- as.data.frame(data_mtx)
-#   colnames(new_df)[c(3:ncol(new_df))] <- as.character(lubridate::year(colnames(new_df)[c(3:ncol(new_df))]))
-#
-#   rm(data_mtx)
-#   gc()
-#
-#   # replace new clase by new pixel value
-#   new_df[c(3:ncol(new_df))] <- ifelse(new_df[c(3:ncol(new_df))] == class_to_replace, new_pixel_value, "")
-#
-#   # points_df <- reshape2::melt(new_df, id.vars = c("x","y")) %>%
-#   #   stats::na.omit()
-#   points_df <- new_df %>%
-#     tidyr::gather(variable, value, -x, -y) %>%
-#     stats::na.omit()
-#
-#   # remove factors
-#   points_df$x = as.numeric(as.character(points_df$x)) # as.numeric(levels(points_df$x))[points_df$x]
-#   points_df$y = as.numeric(as.character(points_df$y))
-#   points_df$variable = as.character(as.character(points_df$variable))
-#
-#   rm(new_df)
-#   gc()
-#   # ------------------ replace points_df in raster_df ---------------------
-#
-#   # change original by new values - ok
-#   raster_df_temp0 <- base::merge(raster_df, points_df, by = c("x","y","variable")) %>%
-#     dplyr::mutate(value = .$value.y) %>%
-#     dplyr::select(-value.x, -value.y) %>%
-#     .[order(.$variable),]
-#
-#   rm(points_df)
-#   gc()
-#
-#   # replace in entire raster
-#   raster_df_temp <- dplyr::left_join(raster_df, raster_df_temp0, by = c("x" = "x", "y" = "y", "variable" = "variable")) %>%
-#     dplyr::mutate(value = ifelse(!is.na(.$value.y), .$value.y, .$value.x)) %>%
-#     dplyr::select(-value.x, -value.y) %>%
-#     .[order(.$variable),]
-#
-#   rm(raster_df, raster_df_temp0)
-#   gc()
-#
-#   # remove duplicated lines
-#   raster_df_temp <- raster_df_temp[!duplicated(raster_df_temp), ]
-#
-#   #raster_df_update <- reshape2::dcast(raster_df_temp, x+y ~ variable, value.var= "value")
-#   raster_df_update <- raster_df_temp %>%
-#     tidyr::spread(variable, value)
-#
-#   colnames(raster_df_update)[c(3:ncol(raster_df_update))] <- as.character(timeline)
-#
-#   rm(raster_df_temp)
-#   gc()
-#
-#   return(raster_df_update)
-#
-# }
-
-
-
-
 

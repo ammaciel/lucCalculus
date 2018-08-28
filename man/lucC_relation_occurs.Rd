@@ -18,18 +18,18 @@ Data set with merge of two data sets that values are in the same interval
 }
 \description{
 Provide an interval relation OCCURS which asserts that classes
-of two distinct data set occurs in the same interval
+of two distinct data set occurs in the same interval, is an intersection
 }
 \examples{
 \dontrun{
 
-a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
                      time_interval = c("2001-09-01","2002-09-01"),
                      relation_interval = "contains", label = label,
                      timeline = timeline)
 a
 
-b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Pasture",
+b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
                      time_interval = c("2001-09-01","2002-09-01"),
                      relation_interval = "contains", label = label,
                      timeline = timeline)

@@ -31,7 +31,6 @@ testthat::test_that("HOLDS predicate", {
 })
 
 
-
 testthat::test_that("RECUR predicate", {
   testthat::skip_on_cran()
   file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
@@ -157,7 +156,6 @@ testthat::test_that("EVOLVE predicate that does not allows overlap and first int
 })
 
 
-
 testthat::test_that("CONVERT predicate", {
   testthat::skip_on_cran()
   file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
@@ -230,8 +228,4 @@ testthat::test_that("CONVERT predicate that does not allows overlap and first in
                                                            label = my_label, timeline = my_timeline ))
 
 })
-
-
-
-
 

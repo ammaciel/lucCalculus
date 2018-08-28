@@ -24,13 +24,13 @@ DOI: \url{http://dx.doi.org/10.1145/182.358434})
 \examples{
 \dontrun{
 
-a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Forest",
+a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
                      time_interval = c("2004-09-01","2007-09-01"),
                      relation_interval = "equals", label = label,
                      timeline = timeline)
 a
 
-b <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Cerrado",
+b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
                      time_interval = c("2001-09-01","2003-09-01"),
                      relation_interval = "contains", label = label,
                      timeline = timeline)

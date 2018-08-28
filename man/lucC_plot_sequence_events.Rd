@@ -37,9 +37,24 @@ Plot locations as a sequence of lines over time
 }
 \examples{
 \dontrun{
+library(lucCalculus)
 
-lucC_plot_sequence_events(ts_occur1, show_y_index = FALSE,
-end_date = "2017-03-01", custom_palette = TRUE, RGB_color = "#929e6e")
+file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+rb_class <- raster::brick(file)
+my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+              "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+                 "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+                 "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+                 "2016-09-01")
+
+a <- lucC_pred_holds(raster_obj = rb_class, raster_class = c("Pasture"),
+                     time_interval = c("2007-09-01","2010-09-01"),
+                     relation_interval = "contains", label = my_label,
+                     timeline = my_timeline)
+
+lucC_plot_sequence_events(data_mtx = a, show_y_index = FALSE,
+                          custom_palette = TRUE, RGB_color = c("#929e6e"))
 
 }
 

@@ -8,7 +8,7 @@
 ##                                                             ##
 ##  R script to plot events: sequence, frequency and bar       ##
 ##                                                             ##
-##                                             2018-02-28      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##                                                             ##
 #################################################################
@@ -48,9 +48,24 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_plot_sequence_events(ts_occur1, show_y_index = FALSE,
-#' end_date = "2017-03-01", custom_palette = TRUE, RGB_color = "#929e6e")
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = c("Pasture"),
+#'                      time_interval = c("2007-09-01","2010-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' lucC_plot_sequence_events(data_mtx = a, show_y_index = FALSE,
+#'                           custom_palette = TRUE, RGB_color = c("#929e6e"))
 #'
 #'}
 #'
@@ -190,12 +205,25 @@ lucC_plot_sequence_events <- function(data_mtx = NULL, custom_palette = FALSE, R
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_plot_bar_events(data_mtx = raster_mtx, custom_palette = TRUE,
-#' RGB_color = c("green", "orange"), pixel_resolution = 232,
-#' relabel = TRUE, original_labels = c("Forest", "Pasture1"),
-#' new_labels = c("Forest", "Pasture"), legend_text = "Legend: ",
-#' column_legend = 1, side_by_side = TRUE)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = c("Pasture"),
+#'                      time_interval = c("2007-09-01","2010-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' lucC_plot_bar_events(data_mtx = a, custom_palette = TRUE,
+#'                      RGB_color = c("#929e6e"), pixel_resolution = 232,
+#'                      legend_text = "Legend: ")
 #'
 #'}
 #'
@@ -334,12 +362,25 @@ lucC_plot_bar_events <- function(data_mtx = NULL, data_frequency = NULL, custom_
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' lucC_plot_frequency_events(data_mtx = raster_mtx, custom_palette = TRUE,
-#' RGB_color = c("green", "orange"), pixel_resolution = 232,
-#' relabel = TRUE, original_labels = c("Forest", "Pasture1"),
-#' new_labels = c("Forest", "Pasture"), legend_text = "Legend: ",
-#' column_legend = 1, side_by_side = TRUE)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = c("Pasture"),
+#'                      time_interval = c("2007-09-01","2010-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' lucC_plot_frequency_events(data_mtx = a, custom_palette = TRUE,
+#'                            RGB_color = c("#929e6e"), pixel_resolution = 232,
+#'                            legend_text = "Legend: ")
 #'
 #'}
 #'

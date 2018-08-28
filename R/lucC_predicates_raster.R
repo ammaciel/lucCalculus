@@ -9,7 +9,7 @@
 ##   R script with predicates holds(o,c,t) with raster         ##
 ##   and combined predicates, recur, evolve and convert        ##
 ##                                                             ##
-##                                             2018-02-26      ##
+##                                             2018-08-28      ##
 ##                                                             ##
 ##  J. F. Allen.  Towards a general theory of action and       ##
 ##  time. Artificial Intelligence, 23(2): 123--154, 1984.      ##
@@ -47,10 +47,21 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_sits, raster_class = "Pasture",
-#' time_interval = c("2001-09-01","2005-09-01"), relation_interval = "contains",
-#' label = label, timeline = timeline)
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = c("Pasture"),
+#'                      time_interval = c("2007-09-01","2010-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
 #' a
 #'
 #'}
@@ -246,12 +257,25 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' @export
 #'
 #' @examples \dontrun{
+#'library(lucCalculus)
 #'
-#' b <- lucC_pred_recur(raster_obj = rb_sits, raster_class = "Forest",
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' b <- lucC_pred_recur(raster_obj = rb_class, raster_class = "Forest",
 #'                      time_interval1 = c("2001-09-01","2001-09-01"),
 #'                      time_interval2 = c("2002-09-01","2016-09-01"),
-#'                      label = label, timeline = timeline))
-#' b
+#'                      label = my_label, timeline = my_timeline)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = b,
+#'                         timeline = my_timeline, label = my_label,
+#'                         custom_palette = FALSE)
 #'
 #'}
 #'
@@ -396,15 +420,28 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' c <- lucC_pred_evolve(raster_obj = rb_sits, raster_class1 = "Forest",
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' c <- lucC_pred_evolve(raster_obj = rb_class, raster_class1 = "Forest",
 #'                       time_interval1 = c("2001-09-01","2001-09-01"),
-#'                       relation_interval1 = "contains",
-#'                       raster_class2 = "Pasture1",
+#'                       relation_interval1 = "equals",
+#'                       raster_class2 = "Pasture",
 #'                       time_interval2 = c("2002-09-01","2016-09-01"),
 #'                       relation_interval2 = "contains",
-#'                       label = label, timeline = timeline)
-#' c
+#'                       label = my_label, timeline = my_timeline)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c,
+#'                         timeline = my_timeline, label = my_label,
+#'                         custom_palette = FALSE)
 #'
 #'}
 #'
@@ -522,15 +559,28 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' d <- lucC_pred_convert(raster_obj = rb_sits, raster_class1 = "Forest",
-#'                       time_interval1 = c("2001-09-01","2001-09-01"),
-#'                       relation_interval1 = "equals",
-#'                       raster_class2 = "Pasture1",
-#'                       time_interval2 = c("2002-09-01","2002-09-01"),
-#'                       relation_interval2 = "equals",
-#'                       label = label, timeline = timeline)
-#' d
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' d <- lucC_pred_convert(raster_obj = rb_class, raster_class1 = "Forest",
+#'                        time_interval1 = c("2012-09-01","2012-09-01"),
+#'                        relation_interval1 = "equals",
+#'                        raster_class2 = "Degradation",
+#'                        time_interval2 = c("2013-09-01","2013-09-01"),
+#'                        relation_interval2 = "equals",
+#'                        label = my_label, timeline = my_timeline)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = d,
+#'                         timeline = my_timeline, label = my_label,
+#'                         custom_palette = FALSE)
 #'
 #'}
 #'

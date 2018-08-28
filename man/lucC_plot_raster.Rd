@@ -41,9 +41,19 @@ Plot RasterBrick in ggplot2.
 }
 \examples{
 \dontrun{
+library(lucCalculus)
 
-lucC_plot_raster(raster_obj = rb_sits, timeline = timeline, label = label,
-custom_palette = TRUE, RGB_color = colors_1)
+file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+rb_class <- raster::brick(file)
+my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+              "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+                 "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+                 "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+                 "2016-09-01")
+
+lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+                 custom_palette = FALSE, plot_ncol = 4)
 
 }
 
