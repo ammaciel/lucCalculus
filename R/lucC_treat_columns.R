@@ -66,13 +66,19 @@ lucC_remove_columns <- function(data_mtx = NULL, name_columns = NULL){
                        err_desc = "name_columns must be defined! Enter names of columns to remove!")
   #
   data_mtx <- as.data.frame(data_mtx)
-  message(paste(c("Columns removed: ", as.character(name_columns), "\t"), collapse="\n"))
 
   if (!is.null(data_mtx)){
     # columns to delete
     drops <- as.character(name_columns)
-    data_mtx_new <- data_mtx[ , !(names(data_mtx) %in% drops)]
-    return(data_mtx_new)
+    if (any(names(data_mtx) %in% drops) == TRUE){
+      message(paste(c("Columns removed: ", as.character(name_columns), "\t"), collapse="\n"))
+      data_mtx_new <- data_mtx[ , !(names(data_mtx) %in% drops)]
+      return(data_mtx_new)
+    } else {
+      message("This column does not exist in data")
+      data_mtx_new <- data_mtx
+      return(data_mtx_new)
+    }
   } else {
     message(paste(c("Data set is empty! ", as.character(name_columns), "\t"), collapse="\n"))
     data_mtx_new <- data_mtx

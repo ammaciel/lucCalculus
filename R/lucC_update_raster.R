@@ -36,6 +36,7 @@
 #' @importFrom lubridate year
 #' @importFrom dplyr mutate select
 #' @importFrom tidyr gather spread
+#' @importFrom raster rasterToPoints
 #' @export
 #'
 #' @examples \dontrun{
