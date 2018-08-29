@@ -63,21 +63,35 @@
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-#'                      time_interval = c("2001-09-01","2003-09-01"),
-#'                      relation_interval = "equals", label = label,
-#'                      timeline = timeline)
-#' a
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
-#'                      time_interval = c("2001-09-01","2007-09-01"),
-#'                      relation_interval = "equals", label = label,
-#'                      timeline = timeline)
-#' b
+#' lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+#'                  custom_palette = FALSE, plot_ncol = 4)
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
+#'                      time_interval = c("2005-09-01","2009-09-01"),
+#'                      relation_interval = "equals", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#'                      time_interval = c("2005-09-01","2011-09-01"),
+#'                      relation_interval = "equals", label = my_label,
+#'                      timeline = my_timeline)
 #'
 #' # in
 #' c <- lucC_relation_in(first_raster = a, second_raster = b)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+#'                         label = my_label, custom_palette = FALSE, plot_ncol = 4)
 #'
 #'}
 #'
@@ -144,21 +158,35 @@ lucC_relation_in <- function (first_raster = NULL, second_raster = NULL) {
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
+#'
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
+#'
+#' lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+#'                  custom_palette = FALSE, plot_ncol = 4)
 #'
 #' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-#'                      time_interval = c("2001-09-01","2003-09-01"),
-#'                      relation_interval = "equals", label = label,
-#'                      timeline = timeline)
-#' a
+#'                      time_interval = c("2001-09-01","2004-09-01"),
+#'                      relation_interval = "equals", label = my_label,
+#'                      timeline = my_timeline)
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
-#'                      time_interval = c("2004-09-01","2007-09-01"),
-#'                      relation_interval = "equals", label = label,
-#'                      timeline = timeline)
-#' b
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#'                      time_interval = c("2005-09-01","2009-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
 #'
 #' # follows
 #' c <- lucC_relation_follows(first_raster = a, second_raster = b)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+#'                         label = my_label, custom_palette = FALSE, plot_ncol = 4)
 #'
 #'}
 #'
@@ -222,26 +250,40 @@ lucC_relation_follows <- function (first_raster = NULL, second_raster = NULL) {
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-#'                      time_interval = c("2004-09-01","2007-09-01"),
-#'                      relation_interval = "equals", label = label,
-#'                      timeline = timeline)
-#' a
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Cerrado",
-#'                      time_interval = c("2001-09-01","2003-09-01"),
-#'                      relation_interval = "contains", label = label,
-#'                      timeline = timeline)
-#' b
+#' lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+#'                  custom_palette = FALSE, plot_ncol = 4)
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#'                      time_interval = c("2005-09-01","2007-09-01"),
+#'                      relation_interval = "equals", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval = c("2001-09-01","2004-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
 #'
 #' # precedes
 #' c <- lucC_relation_precedes(first_raster = a, second_raster = b)
 #'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+#'                         label = my_label, custom_palette = FALSE, plot_ncol = 4)
+#'
 #'}
 #'
 
-# Antonyms of following
+# Antonyms of follows
 # 16. The 'lucC_relation_precedes' relation = lucC_relation_met_by || lucC_relation_after
 lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 
@@ -279,16 +321,16 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 
 
 
-#' @title Allen Relation Occurs
-#' @name lucC_relation_occurs
-#' @aliases lucC_relation_same_interval
+#' @title Allen Occurs
+#' @name lucC_occurs
+#' @aliases lucC_occurs
 #' @author Adeline M. Maciel
 #' @docType data
 #'
 #' @description Provide an interval relation OCCURS which asserts that classes
 #' of two distinct data set occurs in the same interval, is an intersection
 #'
-#' @usage lucC_relation_occurs(first_raster = NULL, second_raster = NULL)
+#' @usage lucC_occurs(first_raster = NULL, second_raster = NULL)
 #'
 #' @param first_raster  Matrix. An interval between two dates.
 #' @param second_raster Matrix. An interval between two dates.
@@ -300,28 +342,42 @@ lucC_relation_precedes <- function (first_raster = NULL, second_raster = NULL) {
 #' @export
 #'
 #' @examples \dontrun{
+#' library(lucCalculus)
 #'
-#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-#'                      time_interval = c("2001-09-01","2002-09-01"),
-#'                      relation_interval = "contains", label = label,
-#'                      timeline = timeline)
-#' a
+#' file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+#' rb_class <- raster::brick(file)
+#' my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#'               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+#' my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#'                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#'                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#'                  "2016-09-01")
 #'
-#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
-#'                      time_interval = c("2001-09-01","2002-09-01"),
-#'                      relation_interval = "contains", label = label,
-#'                      timeline = timeline)
-#' b
+#' lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+#'                  custom_palette = FALSE, plot_ncol = 4)
+#'
+#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#'                      time_interval = c("2001-09-01","2007-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
+#'
+#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
+#'                      time_interval = c("2001-09-01","2007-09-01"),
+#'                      relation_interval = "contains", label = my_label,
+#'                      timeline = my_timeline)
 #'
 #' # occurs
-#' c <- lucC_relation_occurs(first_raster = a, second_raster = b)
+#' c <- lucC_occurs(first_raster = a, second_raster = b)
+#'
+#' lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+#'                         label = my_label, custom_palette = FALSE, plot_ncol = 4)
 #'
 #'}
 #'
 
 #
-#  The 'lucC_relation_occurs'
-lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
+#  The 'lucC_occurs'
+lucC_occurs <- function (first_raster = NULL, second_raster = NULL) {
 
   # check is data set are empty
   # remove rows with last and first column NA because MEETS
@@ -388,7 +444,7 @@ lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
 #' @author Adeline M. Maciel
 #' @docType data
 #'
-#' @description Merge two data set by different columns and rows. Because base::merge replace values in initial years
+#' @description Merge two data sets by different columns and rows. Because base::merge replace values in initial years
 #'
 #' @usage lucC_merge(first_raster = NULL, second_raster = NULL)
 #'
@@ -404,21 +460,35 @@ lucC_relation_occurs <- function (first_raster = NULL, second_raster = NULL) {
 #' @export
 #'
 #' @examples \dontrun{
-#'
-#' a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-#'                      time_interval = c("2001-09-01","2002-09-01"),
-#'                      relation_interval = "contains", label = label,
-#'                      timeline = timeline)
-#' a
-#'
-#' b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
-#'                      time_interval = c("2001-09-01","2002-09-01"),
-#'                      relation_interval = "contains", label = label,
-#'                      timeline = timeline)
-#' b
-#'
-#' # merge
-#' c <- lucC_merge(first_raster = a, second_raster = b)
+#' library(lucCalculus)
+#
+# file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
+# rb_class <- raster::brick(file)
+# my_label <- c("Degradation", "Fallow_Cotton", "Forest", "Pasture", "Soy_Corn", "Soy_Cotton",
+#               "Soy_Fallow", "Soy_Millet", "Soy_Sunflower", "Sugarcane", "Urban_Area", "Water")
+# my_timeline <- c("2001-09-01", "2002-09-01", "2003-09-01", "2004-09-01", "2005-09-01",
+#                  "2006-09-01", "2007-09-01", "2008-09-01", "2009-09-01", "2010-09-01",
+#                  "2011-09-01", "2012-09-01", "2013-09-01", "2014-09-01", "2015-09-01",
+#                  "2016-09-01")
+#
+# lucC_plot_raster(raster_obj = rb_class, timeline = my_timeline, label = my_label,
+#                  custom_palette = FALSE, plot_ncol = 4)
+#
+# a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
+#                      time_interval = c("2001-09-01","2007-09-01"),
+#                      relation_interval = "contains", label = my_label,
+#                      timeline = my_timeline)
+#
+# b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
+#                      time_interval = c("2001-09-01","2007-09-01"),
+#                      relation_interval = "contains", label = my_label,
+#                      timeline = my_timeline)
+#
+# # merge
+# c <- lucC_merge(first_raster = a, second_raster = b)
+#
+# lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+#                         label = my_label, custom_palette = FALSE, plot_ncol = 4)
 #'
 #'}
 #'

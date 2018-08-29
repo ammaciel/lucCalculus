@@ -12,7 +12,7 @@ relation_interval2 = "equals", label = NULL, timeline = NULL,
 remove_column = TRUE)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{raster_class1}{Character. Name of the first class of interest, such as 'Forest', to research}
 

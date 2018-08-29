@@ -11,7 +11,7 @@ time_interval2 = c("2002-01-01", "2005-01-01"),
 label = NULL, timeline = NULL, remove_column = TRUE)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{raster_class}{Character. Name of the class of interest, such as 'Forest', to research}
 

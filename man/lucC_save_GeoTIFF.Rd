@@ -9,7 +9,7 @@ lucC_save_GeoTIFF(raster_obj = NULL, data_mtx = NULL,
 path_raster_folder = NULL, as_RasterBrick = FALSE)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{data_mtx}{Matrix. A matrix with pixel replaced, can be obtined using lucC_update_raster()}
 

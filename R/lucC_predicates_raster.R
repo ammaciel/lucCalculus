@@ -31,7 +31,7 @@
 #' time_interval = c("2000-01-01", "2004-01-01"),
 #' relation_interval = "contains", label = NULL, timeline = NULL)
 #'
-#' @param raster_obj        Raster. A raster stack with classified images
+#' @param raster_obj        Raster. A raster brick with classified images
 #' @param raster_class      Character. Name of the class of interest, such as 'Forest', to research
 #' @param time_interval     Interval. A time interval to verify if class is over or not
 #' @param relation_interval Character. If a location HOLDS during all time interval 'equals' or can be appear in any
@@ -77,12 +77,12 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
   options(digits = 12)
 
   if (!is.null(raster_obj) & !is.null(raster_class) & !is.null(label) & !is.null(timeline)) {
-    rasterStack_obj <- raster_obj
+    rasterBrick_obj <- raster_obj
     class_name <- as.character(raster_class)
     label <- label
     timeline <- timeline
   } else {
-    stop("\nParameters:\n raster_obj (raster.stack),\n
+    stop("\nParameters:\n raster_obj (rasterBrick),\n
          raster_class ('Forest') and must be defined!\n
          final_result = TRUE or FALSE\n")
   }
@@ -130,7 +130,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
   }
 
   # apply holds_raster to obtain results
-  output_holds <- .holds_raster(rasterStack_obj, class, date_start, date_end)
+  output_holds <- .holds_raster(rasterBrick_obj, class, date_start, date_end)
 
   # empty data
   longLatFromRaster <- NULL
@@ -240,7 +240,7 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' time_interval2 = c("2002-01-01", "2005-01-01"),
 #' label = NULL, timeline = NULL, remove_column = TRUE)
 #'
-#' @param raster_obj       Raster. A raster stack with classified images
+#' @param raster_obj       Raster. A raster brick with classified images
 #' @param raster_class     Character. Name of the class of interest, such as 'Forest', to research
 #' @param time_interval1   Interval. A first time interval to verify if class is over or not
 #' @param time_interval2   Interval. A second and non-overlapped time interval to verify if class is over or not
@@ -284,12 +284,12 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interval1 = c("2001-01-01", "2001-01-01"), time_interval2 = c("2002-01-01", "2005-01-01"), label = NULL, timeline = NULL, remove_column = TRUE){
 
   if (!is.null(raster_obj) & !is.null(raster_class) & !is.null(label) & !is.null(timeline)) {
-    rasterStack_obj <- raster_obj
+    rasterBrick_obj <- raster_obj
     class_name <- as.character(raster_class)
     label <- label
     timeline <- timeline
   } else {
-    stop("\nParameters:\n raster_obj (raster.stack),\n
+    stop("\nParameters:\n raster_obj (rasterBrick),\n
          raster_class ('Forest') and must be defined!\n
          final_result = TRUE or FALSE\n")
   }
@@ -310,10 +310,10 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
   }
 
   # apply holds in both temporal intervals
-  res1 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name,
+  res1 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name,
                           time_interval = c(time_intervals[[1]][1], time_intervals[[1]][2]), relation_interval = "equals",
                           label = label, timeline = timeline)
-  res2 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name,
+  res2 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name,
                           time_interval = c(time_intervals[[2]][1], time_intervals[[2]][2]), relation_interval = "contains",
                           label = label, timeline = timeline)
 
@@ -399,7 +399,7 @@ lucC_pred_recur <- function(raster_obj = NULL, raster_class = NULL, time_interva
 #' relation_interval2 = "contains", label = NULL, timeline = NULL,
 #' remove_column = TRUE)
 #'
-#' @param raster_obj         Raster. A raster stack with classified images
+#' @param raster_obj         Raster. A raster brick with classified images
 #' @param raster_class1      Character. Name of the first class of interest, such as 'Forest', to research
 #' @param time_interval1     Interval. A first interval to verify if class is over or not
 #' @param relation_interval1 Character. If a location HOLDS during all time interval 'equals' or can be appear in any
@@ -451,13 +451,13 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 
   if (!is.null(raster_obj) & !is.null(raster_class1) & !is.null(raster_class2)
       & !is.null(label) & !is.null(timeline)) {
-    rasterStack_obj <- raster_obj
+    rasterBrick_obj <- raster_obj
     class_name1 <- as.character(raster_class1)
     class_name2 <- as.character(raster_class2)
     label <- label
     timeline <- timeline
   } else {
-    stop("\nParameters:\n raster_obj (raster.stack),\n
+    stop("\nParameters:\n raster_obj (rasterBrick),\n
          raster_class ('Forest') and must be defined!\n
          final_result = TRUE or FALSE\n")
   }
@@ -478,10 +478,10 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
   }
 
   # apply holds in both temporal intervals
-  res1 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name1,
+  res1 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name1,
                           time_interval = c(time_intervals[[1]][1], time_intervals[[1]][2]), relation_interval = "contains",
                           label = label, timeline = timeline)
-  res2 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name2,
+  res2 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name2,
                           time_interval = c(time_intervals[[2]][1], time_intervals[[2]][2]), relation_interval = "contains",
                           label = label, timeline = timeline)
 
@@ -538,7 +538,7 @@ lucC_pred_evolve <- function(raster_obj = NULL, raster_class1 = NULL, time_inter
 #' relation_interval2 = "equals", label = NULL, timeline = NULL,
 #' remove_column = TRUE)
 #'
-#' @param raster_obj         Raster. A raster stack with classified images
+#' @param raster_obj         Raster. A raster brick with classified images
 #' @param raster_class1      Character. Name of the first class of interest, such as 'Forest', to research
 #' @param time_interval1     Interval. A first interval to verify if class is over or not
 #' @param relation_interval1 Character. If a location HOLDS during all time interval 'equals' or can be appear in any
@@ -590,13 +590,13 @@ lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_inte
 
   if (!is.null(raster_obj) & !is.null(raster_class1) & !is.null(raster_class2)
       & !is.null(label) & !is.null(timeline)) {
-    rasterStack_obj <- raster_obj
+    rasterBrick_obj <- raster_obj
     class_name1 <- as.character(raster_class1)
     class_name2 <- as.character(raster_class2)
     label <- label
     timeline <- timeline
   } else {
-    stop("\nParameters:\n raster_obj (raster.stack),\n
+    stop("\nParameters:\n raster_obj (rasterBrick),\n
          raster_class ('Forest') and must be defined!\n
          final_result = TRUE or FALSE\n")
   }
@@ -617,10 +617,10 @@ lucC_pred_convert <- function(raster_obj = NULL, raster_class1 = NULL, time_inte
   }
 
   # apply holds in both temporal intervals
-  res1 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name1,
+  res1 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name1,
                           time_interval = c(time_intervals[[1]][1], time_intervals[[1]][2]), relation_interval = relation_interval1,
                           label = label, timeline = timeline)
-  res2 <- lucC_pred_holds(raster_obj = rasterStack_obj, raster_class = class_name2,
+  res2 <- lucC_pred_holds(raster_obj = rasterBrick_obj, raster_class = class_name2,
                           time_interval = c(time_intervals[[2]][1], time_intervals[[2]][2]), relation_interval = relation_interval2,
                           label = label, timeline = timeline)
 

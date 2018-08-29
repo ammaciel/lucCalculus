@@ -26,7 +26,7 @@
 #' plot_ncol = 5, relabel = FALSE, original_labels = NULL,
 #' new_labels = NULL, legend_text = "Legend:", columns_legend = 4)
 #'
-#' @param raster_obj      Raster. A raster stack with classified images
+#' @param raster_obj      Raster. A raster brick with classified images
 #' @param timeline        Character. A list of all dates of classified raster, timeline
 #' @param label           Character. All labels of each value of pixel from classified raster
 #' @param custom_palette  Boolean. A TRUE or FALSE value. If TRUE, user will provide its own color palette setting! Default is FALSE
@@ -74,7 +74,7 @@ lucC_plot_raster <- function(raster_obj = NULL, timeline = NULL, label = NULL, c
 
   # Ensure if parameters exists
   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-                       err_desc = "raster_obj, file must be defined!")
+                       err_desc = "raster_obj, file must be defined!\nA raster brick with classified images.")
   ensurer::ensure_that(timeline, !is.null(timeline),
                        err_desc = "timeline must be defined!")
   ensurer::ensure_that(label, !is.null(label),

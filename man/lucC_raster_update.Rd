@@ -9,7 +9,7 @@ lucC_raster_update(raster_obj = NULL, data_mtx = NULL,
 timeline = NULL, class_to_replace = NULL, new_pixel_value = 20)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{data_mtx}{Matrix. A matrix with values obtained from predicates RECUR, EVOLVE, CONVERT or HOLDS}
 

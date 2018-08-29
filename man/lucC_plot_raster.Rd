@@ -11,7 +11,7 @@ plot_ncol = 5, relabel = FALSE, original_labels = NULL,
 new_labels = NULL, legend_text = "Legend:", columns_legend = 4)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{timeline}{Character. A list of all dates of classified raster, timeline}
 

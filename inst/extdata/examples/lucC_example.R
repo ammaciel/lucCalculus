@@ -310,7 +310,7 @@ vsec.mtx <- lucC_pred_holds(raster_obj = rb_sits2, raster_class = "Secondary_Veg
 head(vsec.mtx)
 
 message("Start Double cropping occurs ...\n")
-CerVS.mtx <- lucC_relation_occurs(first_raster = cer.mtx, second_raster = vsec.mtx)
+CerVS.mtx <- lucC_occurs(first_raster = cer.mtx, second_raster = vsec.mtx)
 
 # only double and single with no occurs
 cer_only.mtx <- dplyr::anti_join(as.data.frame(cer.mtx), as.data.frame(CerVS.mtx), by = c("x","y"))

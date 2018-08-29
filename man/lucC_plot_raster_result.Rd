@@ -12,7 +12,7 @@ legend_text = "Legend:", columns_legend = 4, shape_point = 0,
 colour_point = "black", size_point= 1)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{data_mtx}{Matrix. A matrix with values obtained from predicates RECUR, EVOLVE, CONVERT or HOLDS}
 

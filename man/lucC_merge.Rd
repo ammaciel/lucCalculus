@@ -16,25 +16,11 @@ lucC_merge(first_raster = NULL, second_raster = NULL)
 Data set merged with two data sets that values are in the same interval
 }
 \description{
-Merge two data set by different columns and rows. Because base::merge replace values in initial years
+Merge two data sets by different columns and rows. Because base::merge replace values in initial years
 }
 \examples{
 \dontrun{
-
-a <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Forest",
-                     time_interval = c("2001-09-01","2002-09-01"),
-                     relation_interval = "contains", label = label,
-                     timeline = timeline)
-a
-
-b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Pasture",
-                     time_interval = c("2001-09-01","2002-09-01"),
-                     relation_interval = "contains", label = label,
-                     timeline = timeline)
-b
-
-# merge
-c <- lucC_merge(first_raster = a, second_raster = b)
+library(lucCalculus)
 
 }
 

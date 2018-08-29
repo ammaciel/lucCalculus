@@ -24,7 +24,6 @@ from raster_1 can not overlap time interval from raster_2. See more at (ALLEN, J
 }
 \examples{
 \dontrun{
-
 library(lucCalculus)
 
 file <- c(system.file("extdata/raster/rasterSample.tif", package = "lucCalculus"))
@@ -51,7 +50,10 @@ b <- lucC_pred_holds(raster_obj = rb_class, raster_class = "Degradation",
 
 # before
 c <- lucC_relation_before(first_raster = a, second_raster = b)
-c
+
+lucC_plot_raster_result(raster_obj = rb_class, data_mtx = c, timeline = my_timeline,
+                        label = my_label, custom_palette = FALSE, plot_ncol = 4)
+
 
 }
 

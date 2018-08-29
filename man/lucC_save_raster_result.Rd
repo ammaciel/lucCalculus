@@ -9,7 +9,7 @@ lucC_save_raster_result(raster_obj = NULL, data_mtx = NULL,
 timeline = NULL, label = NULL, path_raster_folder = NULL, as_RasterBrick = FALSE)
 }
 \arguments{
-\item{raster_obj}{Raster. A raster stack with classified images}
+\item{raster_obj}{Raster. A raster brick with classified images}
 
 \item{data_mtx}{Matrix. A matrix with values obtained from predicates RECUR, EVOLVE, CONVERT or HOLDS}
 

@@ -20,16 +20,15 @@ Provide a lucC_interval, an input pattern format used by Allen's relations. And 
 }
 \examples{
 \dontrun{
-
-library(lucC)
+library(lucCalculus)
 
 # create some examples of intervals
 time1 <- lucC_interval("2011-09-01","2011-10-01")
+time1
 time2 <- lucC_interval("2011-09-15","2011-11-01")
-
+time2
 
 }
-
 
 }
 \author{

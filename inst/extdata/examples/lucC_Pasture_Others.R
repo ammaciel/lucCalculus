@@ -84,7 +84,7 @@ for(x in 2:length(timeline1[-16])){
     OtherPast.temp <- lucC_relation_meets(other.df, past2.df)
 
     # intersection between two times
-    temp <- lucC_relation_occurs(PastOther.temp, OtherPast.temp)
+    temp <- lucC_occurs(PastOther.temp, OtherPast.temp)
 
     if (!is.null(temp)) {
       # select only the column, into data.frame, with different class between two Pasture classes

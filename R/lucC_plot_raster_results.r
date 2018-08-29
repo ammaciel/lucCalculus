@@ -28,7 +28,7 @@
 #' legend_text = "Legend:", columns_legend = 4, shape_point = 0,
 #' colour_point = "black", size_point= 1)
 #'
-#' @param raster_obj      Raster. A raster stack with classified images
+#' @param raster_obj      Raster. A raster brick with classified images
 #' @param data_mtx        Matrix. A matrix with values obtained from predicates RECUR, EVOLVE, CONVERT or HOLDS
 #' @param timeline        Character. A list of all dates of classified raster, timeline
 #' @param label           Character. All labels of each value of pixel from classified raster
@@ -88,7 +88,7 @@ lucC_plot_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   # Ensure if parameters exists
   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-                       err_desc = "raster_obj, file must be defined!")
+                       err_desc = "raster_obj, file must be defined!\nA raster brick with classified images.")
   ensurer::ensure_that(data_mtx, !is.null(data_mtx),
                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
   ensurer::ensure_that(timeline, !is.null(timeline),

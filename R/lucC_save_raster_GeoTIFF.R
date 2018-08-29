@@ -25,7 +25,7 @@
 #' @usage lucC_save_GeoTIFF(raster_obj = NULL, data_mtx = NULL,
 #' path_raster_folder = NULL, as_RasterBrick = FALSE)
 #'
-#' @param raster_obj          Raster. A raster stack with classified images
+#' @param raster_obj          Raster. A raster brick with classified images
 #' @param data_mtx            Matrix. A matrix with pixel replaced, can be obtined using lucC_update_raster()
 #' @param path_raster_folder  Character. Name a path folder to save raster images data. If  doesn't exist, a new directory is created
 #' @param as_RasterBrick      Boolean. If FALSE, each layer will be saved in separate file. If TRUE, write a RasterBrick in a file. Default is FALSE.
@@ -76,7 +76,7 @@ lucC_save_GeoTIFF <- function(raster_obj = NULL, data_mtx = NULL, path_raster_fo
 
   # Ensure if parameters exists
   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-                       err_desc = "raster_obj tibble, file must be defined!\nThis data can be obtained using lucC predicates holds or occurs.")
+                       err_desc = "raster_obj data, file must be defined!\nA raster brick with classified images.")
   ensurer::ensure_that(data_mtx, !is.null(data_mtx),
                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT and lucC_update_raster().")
   ensurer::ensure_that(path_raster_folder, !is.null(path_raster_folder),
@@ -137,7 +137,7 @@ lucC_save_GeoTIFF <- function(raster_obj = NULL, data_mtx = NULL, path_raster_fo
 #' @usage lucC_save_raster_result(raster_obj = NULL, data_mtx = NULL,
 #' timeline = NULL, label = NULL, path_raster_folder = NULL, as_RasterBrick = FALSE)
 #'
-#' @param raster_obj          Raster. A raster stack with classified images
+#' @param raster_obj          Raster. A raster brick with classified images
 #' @param data_mtx            Matrix. A matrix with values obtained from predicates RECUR, EVOLVE, CONVERT or HOLDS
 #' @param timeline            Character. A list of all dates of classified raster, timeline
 #' @param label               Character Vector. All labels of each value of pixel from classified raster
@@ -187,7 +187,7 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   # Ensure if parameters exists
   ensurer::ensure_that(raster_obj, !is.null(raster_obj),
-                       err_desc = "raster_obj tibble, file must be defined!\nThis data can be obtained using lucC predicates holds or occurs.")
+                       err_desc = "raster_obj data, file must be defined!\nA raster brick with classified images.")
   ensurer::ensure_that(data_mtx, !is.null(data_mtx),
                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
   ensurer::ensure_that(timeline, !is.null(timeline),
