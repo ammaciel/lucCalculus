@@ -106,6 +106,36 @@ png(filename = "~/TESTE/PRODES/fig_PA_def_holds2.png", width = 6.5, height = 4.5
 lucC_plot_frequency_events(deforestation_holds, custom_palette = TRUE, RGB_color = c("black"), pixel_resolution = 61.006, legend_text = "Legend:")
 dev.off()
 
+# Compute values
+measures_defores_holds <- lucC_result_measures(data_mtx = deforestation_holds, pixel_resolution = 61.006)
+measures_defores_holds
+
+
+# Years       Classes Pixel_number      Area_km2 Cumulative_Sum
+# 1   2007 Deforestation      1037033 3859.55893849  3859.55893849
+# 2   2008 Deforestation      1110328 4132.34328807  7991.90222656
+# 3   2009 Deforestation      1235031 4596.45443815 12588.35666471
+# 4   2010 Deforestation      1257211 4679.00245471 17267.35911942
+# 5   2011 Deforestation      1281915 4770.94412293 22038.30324235
+# 6   2012 Deforestation      1318880 4908.51794764 26946.82118999
+# 7   2013 Deforestation      1388554 5167.82590552 32114.64709551
+# 8   2014 Deforestation      1433988 5336.91907884 37451.56617435
+# 9   2015 Deforestation      1469229 5468.07663752 42919.64281187
+# 10  2016 Deforestation      1502157 5590.62583000 48510.26864187
+# 11  2017 Deforestation      1520124 5657.49418949 54167.76283136
+# Relative_Frequency Cumulative_Relative_Frequency
+# 1       7.12519538698                 7.12519538698
+# 2       7.62878707200                14.75398245897
+# 3       8.48559031774                23.23957277671
+# 4       8.63798357203                31.87755634875
+# 5       8.80771860153                40.68527495027
+# 6       9.06169590744                49.74697085771
+# 7       9.54040860355                59.28737946126
+# 8       9.85257429858                69.13995375985
+# 9      10.09470642999                79.23466018984
+# 10     10.32094651464                89.55560670448
+# 11     10.44439329552               100.00000000000
+
 
 #----------------------------
 # 2- Forest evolve to deforestation - LUC Calculus
@@ -124,7 +154,7 @@ head(forest_evolve)
 
 
 png(filename = "~/TESTE/PRODES/fig_PA_def_evolve.png", width = 6.5, height = 4.5, units = 'in', res = 300)
-lucC_plot_bar_events(forest_evolve, custom_palette = TRUE, RGB_color = c("#00aa00", "#c81411"), pixel_resolution = 61.006, side_by_side = TRUE)
+lucC_plot_bar_events(forest_evolve, custom_palette = TRUE, RGB_color = c("black"), pixel_resolution = 61.006, side_by_side = TRUE)
 #lucC_plot_bar_events(forest_holds, custom_palette = FALSE, pixel_resolution = 70, legend_text = "Legend:")
 dev.off()
 
@@ -138,6 +168,33 @@ dev.off()
 message("Prepare image 1 ...\n")
 lucC_save_raster_result(raster_obj = rb_sits, data_mtx = as.data.frame(forest_evolve), timeline = timeline, label = label, path_raster_folder = "~/TESTE/PRODES/forest_evolve", as_RasterBrick = FALSE)
 
+
+# Compute values
+measures_defores_evolve <- lucC_result_measures(data_mtx = forest_evolve, pixel_resolution = 61.006)
+measures_defores_evolve
+
+# Years       Classes Pixel_number       Area_km2  Cumulative_Sum
+# 1   2008 Deforestation        73295  272.784349579   272.784349579
+# 2   2009 Deforestation       197998  736.895499664  1009.679849243
+# 3   2010 Deforestation       220178  819.443516222  1829.123365465
+# 4   2011 Deforestation       244882  911.385184440  2740.508549905
+# 5   2012 Deforestation       281847 1048.959009150  3789.467559055
+# 6   2013 Deforestation       351521 1308.266967027  5097.734526082
+# 7   2014 Deforestation       396955 1477.360140350  6575.094666432
+# 8   2015 Deforestation       432196 1608.517699031  8183.612365463
+# 9   2016 Deforestation       465124 1731.066891512  9914.679256976
+# 10  2017 Deforestation       483091 1797.935251003 11712.614507979
+# Relative_Frequency Cumulative_Relative_Frequency
+# 1       2.32897914802                 2.32897914802
+# 2       6.29146890442                 8.62044805244
+# 3       6.99624764107                15.61669569351
+# 4       7.78122752882                23.39792322233
+# 5       8.95580579755                32.35372901988
+# 6      11.16972616264                43.52345518252
+# 7      12.61341043320                56.13686561573
+# 8      13.73320788399                69.87007349972
+# 9      14.77950879655                84.64958229626
+# 10     15.35041770374               100.00000000000
 
 
 
