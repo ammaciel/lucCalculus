@@ -80,7 +80,7 @@ lucC_create_RasterBrick <- function(path_open_GeoTIFFs = NULL, path_save_RasterB
   build_RasterBrick <- GeoTIFF_files %>%
     raster::stack(.) %>%
     raster::brick(.) %>%
-    raster::writeRaster(., paste0(path_save_RasterBrick,"/",name_RasterBrick,".tif", sep = ""), overwrite=TRUE)
+    raster::writeRaster(., paste0(path_save_RasterBrick,"/",name_RasterBrick,"_brick.tif", sep = ""), overwrite=TRUE)
 
   message("RasterBrick saved in path: ", paste0(path_save_RasterBrick,"/",name_RasterBrick,".tif", sep = ""),"\n")
 

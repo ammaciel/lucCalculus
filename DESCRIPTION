@@ -10,7 +10,7 @@ Description: Land Use Change Calculus (lucCalculus) search for events in classif
 License: file LICENSE
 LazyData: TRUE
 Depends: R (>= 3.4)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Encoding: UTF-8
 Imports: dplyr,
       ensurer,

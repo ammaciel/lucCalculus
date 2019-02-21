@@ -22,11 +22,13 @@
 #' @docType data
 #'
 #' @description Provide a data.frame with spatially aggregates the original raster it turns each aggregated cell into a polygon then the extent of each polygon is used to crop the original raster. \url{https://stackoverflow.com/questions/29784829/r-raster-package-split-image-into-multiples}
-#' @usage lucC_blocks_raster_create (raster_obj = NULL, number_blocks_xy = 6, save_images = TRUE)
+#' @usage lucC_blocks_raster_create (raster_obj = NULL, number_blocks_xy = 6,
+#' path_save_RasterBlocks = NULL)
 #'
 #' @param raster_obj        Raster. A raster stack with classified images
 #' @param number_blocks_xy  Numeric. A number of peaces to split raster, consider 2 peaces the raster will be cropped into 4 blocks. Default is 6
-#' @param save_images       Boolean. Write raster in file. Default is TRUE
+# @param save_images       Boolean. Write raster in file. Default is TRUE
+#' @param path_save_RasterBlocks  Character. Name a path folder to SAVE RasterBlocks from GeoTIFF images. If  doesn't exist, a new directory is created
 #'
 #' @keywords datasets
 #' @return List with all the pieces in case you want to keep them in the memory.
@@ -41,13 +43,14 @@
 #' rb_class <- raster::brick(file)
 #'
 #' # blocks saved in folder
-#' lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2, save_images = TRUE)
+#' lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2,
+#' path_save_RasterBlocks = NULL)
 #'
 #'
 #'}
 #'
 
-lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, save_images = TRUE){
+lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, path_save_RasterBlocks = NULL){
 
   # Ensure if parameters exists
   ensurer::ensure_that(raster_obj, !is.null(raster_obj), err_desc = "raster_obj rasterBrick must be defined!\n")
@@ -68,9 +71,13 @@ lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, s
     raster_list[[i]] <- raster::crop(raster_obj, ext)
   }
 
-  # Create directory if doesn't exist
-  path <- file.path(paste0(getwd(), "/Blocks_RasterBrick", sep = ""))
+  if (!is.null(path_save_RasterBlocks)){
+    path <- file.path(paste0(path_save_RasterBlocks, "/Blocks_RasterBrick", sep = ""))
+  }else{
+    path <- file.path(paste0(getwd(), "/Blocks_RasterBrick", sep = ""))
+  }
 
+  # Create directory if doesn't exist
   if (dir.exists(path)){
     message("\nThis directory already exist, data will be overwrited! \n")
     path <- path
@@ -82,12 +89,11 @@ lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, s
   message("Saving... \n")
 
   # save images in directory
-  if(save_images==TRUE){
-    for(i in 1:length(raster_list)){
-      raster::writeRaster(raster_list[[i]], filename=paste0(path, "/Raster_Block_", i, sep=""),
+  for(i in 1:length(raster_list)){
+    raster::writeRaster(raster_list[[i]], filename=paste0(path, "/Raster_Block_", i, sep=""),
                               format="GTiff", datatype="INT1U", overwrite=TRUE)
-    }
   }
+
 
   message("\nRaster splitted in ", length(raster_list), " blocks saved in path ", path, "\n")
 

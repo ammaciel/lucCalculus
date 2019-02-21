@@ -5,14 +5,15 @@
 \alias{lucC_blocks_raster_create}
 \title{Create blocks from RasterBrick in accordance with number of cells}
 \usage{
-lucC_blocks_raster_create (raster_obj = NULL, number_blocks_xy = 6, save_images = TRUE)
+lucC_blocks_raster_create (raster_obj = NULL, number_blocks_xy = 6,
+path_save_RasterBlocks = NULL)
 }
 \arguments{
 \item{raster_obj}{Raster. A raster stack with classified images}
 
 \item{number_blocks_xy}{Numeric. A number of peaces to split raster, consider 2 peaces the raster will be cropped into 4 blocks. Default is 6}
 
-\item{save_images}{Boolean. Write raster in file. Default is TRUE}
+\item{path_save_RasterBlocks}{Character. Name a path folder to SAVE RasterBlocks from GeoTIFF images. If  doesn't exist, a new directory is created}
 }
 \value{
 List with all the pieces in case you want to keep them in the memory.
@@ -28,7 +29,8 @@ file <- c(system.file("extdata/raster/rasterItanhanga.tif", package = "lucCalcul
 rb_class <- raster::brick(file)
 
 # blocks saved in folder
-lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2, save_images = TRUE)
+lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2,
+path_save_RasterBlocks = NULL)
 
 
 }
