@@ -108,11 +108,10 @@ lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, p
 #' @docType data
 #'
 #' @description Merge GeoTIFF splitted into parts. \url{https://stackoverflow.com/questions/29784829/r-raster-package-split-image-into-multiples}
-#' @usage lucC_blocks_raster_merge (path_open_GeoTIFFs = NULL, number_raster = 4,
+#' @usage lucC_blocks_raster_merge (path_open_GeoTIFFs = NULL,
 #' pattern_name = NULL, is.rasterBrick = FALSE)
 #'
 #' @param path_open_GeoTIFFs   Character. Name a path folder to OPEN raster images data.
-#' @param number_raster        Integer. Number of GeoTIFF files.
 #' @param pattern_name         Character. A pattern in name of GeoTIFF to mosaic them
 #' @param is.rasterBrick       Boolean. If TRUE GeoTIFF is a RasterBrick, FALSE is a single layer. Default is FALSE
 #'
@@ -132,12 +131,12 @@ lucC_blocks_raster_create <- function(raster_obj = NULL, number_blocks_xy = 6, p
 #' lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2, save_images = TRUE)
 #'
 #' lucC_blocks_raster_merge(path_open_GeoTIFFs = paste0(getwd(), "/Blocks_RasterBrick", sep = ""),
-#'                          number_raster = 4, pattern_name = "Raster_Block_", is.rasterBrick = TRUE)
+#'                          pattern_name = "Raster_Block_", is.rasterBrick = TRUE)
 #'
 #'}
 #'
 
-lucC_blocks_raster_merge <- function(path_open_GeoTIFFs = NULL, number_raster = 4, pattern_name = NULL, is.rasterBrick = FALSE){
+lucC_blocks_raster_merge <- function(path_open_GeoTIFFs = NULL, pattern_name = NULL, is.rasterBrick = FALSE){
 
  # Ensure if parameters exists
   ensurer::ensure_that(path_open_GeoTIFFs, !is.null(path_open_GeoTIFFs),
@@ -145,7 +144,7 @@ lucC_blocks_raster_merge <- function(path_open_GeoTIFFs = NULL, number_raster = 
 
   message("Verifying if GeoTIFF image exist ...")
   # all files in folder
-  all.files <- list.files(path_open_GeoTIFFs, full.names = TRUE, pattern = paste0(pattern_name, "[0-9]\\.tif$", sep = ""))
+  all.files <- list.files(path_open_GeoTIFFs, full.names = TRUE, pattern = ".tif$")
   if( length(all.files) > 0){
     cat(all.files, sep = "\n")
   } else
@@ -154,13 +153,15 @@ lucC_blocks_raster_merge <- function(path_open_GeoTIFFs = NULL, number_raster = 
   # read each piece back in R
   list <- list()
   if(isTRUE(is.rasterBrick)){
-    for(i in 1:number_raster){ # change this 9 depending on your number of pieces
-      rx <- raster::brick(paste0(path_open_GeoTIFFs,"/", pattern_name, i,".tif", sep=""))
+    for(i in 1:length(all.files)){ # change this 9 depending on your number of pieces
+      file <- all.files[i]
+      rx <- raster::brick(file)
       list[[i]] <- rx
     }
   } else if(is.rasterBrick == FALSE){
-    for(i in 1:number_raster){ # change this 9 depending on your number of pieces
-      rx <- raster::raster(paste0(path_open_GeoTIFFs,"/", pattern_name, i,".tif", sep=""))
+    for(i in 1:length(all.files)){ # change this 9 depending on your number of pieces
+      file <- all.files[i]
+      rx <- raster::raster(file)
       list[[i]] <- rx
     }
   }

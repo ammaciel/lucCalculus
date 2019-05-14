@@ -5,13 +5,11 @@
 \alias{lucC_blocks_raster_merge}
 \title{Merge blocks of RasterBrick or Rasters in accordance with number of blocks}
 \usage{
-lucC_blocks_raster_merge (path_open_GeoTIFFs = NULL, number_raster = 4,
+lucC_blocks_raster_merge (path_open_GeoTIFFs = NULL,
 pattern_name = NULL, is.rasterBrick = FALSE)
 }
 \arguments{
 \item{path_open_GeoTIFFs}{Character. Name a path folder to OPEN raster images data.}
-
-\item{number_raster}{Integer. Number of GeoTIFF files.}
 
 \item{pattern_name}{Character. A pattern in name of GeoTIFF to mosaic them}
 
@@ -34,7 +32,7 @@ rb_class <- raster::brick(file)
 lucC_blocks_raster_create(raster_obj = rb_class, number_blocks_xy = 2, save_images = TRUE)
 
 lucC_blocks_raster_merge(path_open_GeoTIFFs = paste0(getwd(), "/Blocks_RasterBrick", sep = ""),
-                         number_raster = 4, pattern_name = "Raster_Block_", is.rasterBrick = TRUE)
+                         pattern_name = "Raster_Block_", is.rasterBrick = TRUE)
 
 }
 
