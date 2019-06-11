@@ -183,6 +183,9 @@ lucC_extract_frequency <- function(data_mtx.list = NULL, cores_in_parallel = 1){
   ensurer::ensure_that(data_mtx.list, !is.null(data_mtx.list),
                        err_desc = "data_mtx matrix, file must be defined!\nThis data can be obtained using predicates RECUR, HOLDS, EVOLVE and CONVERT.")
 
+  # remove null elementos of the list
+  data_mtx.list[sapply(data_mtx.list, is.null)] <- NULL
+
   # function to melt each data.frame of a list
   .meltFromList <- function(x){
     #raster_data <- reshape2::melt(as.data.frame(x), id.vars = c("x","y"), na.rm = TRUE)
