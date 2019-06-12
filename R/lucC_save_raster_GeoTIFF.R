@@ -20,7 +20,9 @@
 #' @author Adeline M. Maciel
 #' @docType data
 #'
-#' @description Save new_raster reclassified in a diretory defined by user
+#' @description Save new_raster reclassified in a diretory defined by user.
+#' NOTE: Applied only when update a raster with new values, after had applied the
+#' function lucC_raster_update.
 #'
 #' @usage lucC_save_GeoTIFF(raster_obj = NULL, data_mtx = NULL,
 #' path_raster_folder = NULL, as_RasterBrick = FALSE)
@@ -132,7 +134,7 @@ lucC_save_GeoTIFF <- function(raster_obj = NULL, data_mtx = NULL, path_raster_fo
 #' @author Adeline M. Maciel
 #' @docType data
 #'
-#' @description Update a RasterBrick with new values of pixel discovered from LUC Calculus formalism to create GeoTIFF files
+#' @description Update a RasterBrick with new values of pixel discovered from LUC Calculus formalism to create GeoTIFF files. #' NOTE: Used after had applied some of the functions with predicate.
 #'
 #' @usage lucC_save_raster_result(raster_obj = NULL, data_mtx = NULL,
 #' timeline = NULL, label = NULL, path_raster_folder = NULL, as_RasterBrick = FALSE)
@@ -149,7 +151,7 @@ lucC_save_GeoTIFF <- function(raster_obj = NULL, data_mtx = NULL, path_raster_fo
 #' @importFrom ensurer ensure_that
 #' @importFrom lubridate year
 #' @importFrom raster rasterToPoints
-#' @importFrom dplyr mutate select
+#' @importFrom dplyr mutate select everything
 #' @importFrom tidyr gather spread
 #' @importFrom reshape2 dcast
 #' @export
@@ -273,7 +275,27 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
   #   tidyr::spread(variable, value) %>%
   #   dplyr::select(-row)
 
-  rm(raster_rows_both)
+  # check if the raster result does not have all years of timeline
+  dates_result <- as.character(colnames(raster_df_update)[c(3:ncol(raster_df_update))])
+  dates_timeline <- as.character(lubridate::year(timeline))
+
+  if(length(dates_timeline[!(dates_timeline %in% dates_result)]) > 0){
+    years_missing <- as.list(dates_timeline[!(dates_timeline %in% dates_result)])
+    df <- do.call(cbind.data.frame, years_missing)    # pass to dataframe
+    df[1,] <- NA        # set NA as values of rows
+    raster_df_update <- cbind(raster_df_update,df)    # merge columns missing
+    raster_df_update <- raster_df_update %>%          # sort columns and put x and y first
+      dplyr::select(sort(names(.))) %>%
+      dplyr::select(., x, y, dplyr::everything())
+    #
+    colnames(raster_df_update)[c(3:ncol(raster_df_update))] <- as.character(lubridate::year(timeline))
+    raster_df_update <- droplevels(raster_df_update)
+
+  } else {
+    raster_df_update <- raster_df_update
+  }
+
+  rm(raster_rows_both, years_missing, df, dates_result, dates_timeline)
   gc()
 
   # pass to complete date, but we prefer leaver only with years

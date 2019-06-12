@@ -25,7 +25,7 @@ timeline = NULL, label = NULL, path_raster_folder = NULL, as_RasterBrick = FALSE
 Matrix with raster and pixels to create a RasterBrick with result
 }
 \description{
-Update a RasterBrick with new values of pixel discovered from LUC Calculus formalism to create GeoTIFF files
+Update a RasterBrick with new values of pixel discovered from LUC Calculus formalism to create GeoTIFF files. #' NOTE: Used after had applied some of the functions with predicate.
 }
 \examples{
 \dontrun{

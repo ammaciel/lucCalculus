@@ -21,7 +21,9 @@ path_raster_folder = NULL, as_RasterBrick = FALSE)
 Raster in geotiff format to open using SIG
 }
 \description{
-Save new_raster reclassified in a diretory defined by user
+Save new_raster reclassified in a diretory defined by user.
+NOTE: Applied only when update a raster with new values, after had applied the
+function lucC_raster_update.
 }
 \examples{
 \dontrun{
