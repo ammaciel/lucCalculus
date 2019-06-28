@@ -203,6 +203,8 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
   df <- raster::rasterToPoints(raster_obj) %>%
     as.data.frame()
 
+  df[,1:2] <- round(df[,1:2], 5) # limit 5 decimal digits after comman
+
   # replace colnames to timeline
   colnames(df)[c(3:ncol(df))] <- as.character(lubridate::year(timeline))
   #raster_df <- reshape2::melt(as.data.frame(df), id.vars = c("x","y"))
@@ -217,8 +219,10 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   #-------------------- prepare matrix with events --------------------------------
   # x and y as factor
-  data_mtx$x <- as.factor(data_mtx$x)
-  data_mtx$y <- as.factor(data_mtx$y)
+  data_mtx$x <- as.numeric(as.character(as.factor(data_mtx$x)))
+  data_mtx$y <- as.numeric(as.character(as.factor(data_mtx$y)))
+
+  data_mtx[,1:2] <- round(data_mtx[,1:2], 5) # limit 5 decimal digits after comman
 
   # replace new clase by new pixel value
   class_name <- unique(data_mtx[3:ncol(data_mtx)][!duplicated(as.vector(data_mtx[3:ncol(data_mtx)])) & !is.na(data_mtx[3:ncol(data_mtx)])] )
@@ -240,9 +244,9 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
   rm(data_mtx)
   gc()
 
-  # remove factors
-  point_df$x = as.numeric(levels(point_df$x))[point_df$x]
-  point_df$y = as.numeric(levels(point_df$y))[point_df$y]
+  ## remove factors
+  #point_df$x = as.numeric(levels(point_df$x))[point_df$x]
+  #point_df$y = as.numeric(levels(point_df$y))[point_df$y]
 
   # ------------------ replace point_df in raster_df ---------------------
   a <- as.matrix(raster_df)
