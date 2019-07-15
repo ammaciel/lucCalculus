@@ -141,11 +141,11 @@ lucC_pred_holds <- function(raster_obj = NULL, raster_class = NULL, time_interva
 
   if (relation_allen == "equals" & ncol(longLatFromRaster) > 3) {
     longLatFromRaster.mtx <- longLatFromRaster[
-      base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster))] &
+      base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster)), drop=FALSE] &
                       !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) == length(3:ncol(longLatFromRaster)),]
   } else if (relation_allen == "contains" & ncol(longLatFromRaster) > 3)  {
     longLatFromRaster.mtx <- longLatFromRaster[
-      base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster))] &
+      base::rowSums(longLatFromRaster[,c(3:ncol(longLatFromRaster)), drop=FALSE] &
                       !is.na(longLatFromRaster[,c(3:ncol(longLatFromRaster))])) > 0,]
   } else if ((relation_allen == "equals" | relation_allen == "contains") & ncol(longLatFromRaster) == 3){
     longLatFromRaster.mtx <- longLatFromRaster[!(is.na(longLatFromRaster[, 3]) | longLatFromRaster[, 3] == 0), ]
