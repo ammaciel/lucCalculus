@@ -1,8 +1,8 @@
 Package: lucCalculus
 Type: Package
 Title: Land Use Change Calculus
-Version: 0.6.19
-Date: 2019-06-12
+Version: 0.6.20
+Date: 2020-06-11
 Authors@R: person("Adeline", "Maciel", role = c("aut", "cre"), email = "adelsud6@gmail.com")
 Author: Adeline Maciel [aut, cre]
 Maintainer: Adeline Maciel <adelsud6@gmail.com>
@@ -10,7 +10,7 @@ Description: Land Use Change Calculus (lucCalculus) search for events in classif
 License: file LICENSE
 LazyData: TRUE
 Depends: R (>= 3.4)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 Imports: dplyr,
       ensurer,

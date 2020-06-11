@@ -83,6 +83,46 @@ lucC_create_RasterBrick <- function(path_open_GeoTIFFs = NULL, path_save_RasterB
     raster::writeRaster(., paste0(path_save_RasterBrick,"/",name_RasterBrick,"_brick.tif", sep = ""), overwrite=TRUE)
 
   message("RasterBrick saved in path: ", paste0(path_save_RasterBrick,"/",name_RasterBrick,".tif", sep = ""),"\n")
+  lucC_remove_TmpFilesRaster()
+}
+
+#' @title Remove Temporary files in Linux
+#' @name lucC_remove_TmpFilesRaster
+#' @aliases lucC_remove_TmpFilesRaster
+#' @author Adeline M. Maciel
+#' @docType data
+#'
+#' @description Remove temporary files created by raster package
+#'
+#' @usage lucC_remove_TmpFilesRaster()
+#'
+#' @keywords datasets
+#' @export
+#'
+#' @examples \dontrun{
+#' library(lucCalculus)
+#'
+#' # create a RasterBrick from individual raster GeoTIFF classified previously
+#' lucC_create_RasterBrick(path_open_GeoTIFFs =
+#'                         c(system.file("extdata/raster/rasterSample", package = "lucCalculus")),
+#'                         path_save_RasterBrick = getwd())
+#' lucC_remove_TmpFilesRaster()
+#'
+#'}
+#'
+
+# plot maps with events
+lucC_remove_TmpFilesRaster <- function(){
+
+  # temp directory for the current R session
+  tmp_dir <- tempdir()
+  # temp directory contains the temp files and directory for the current R session
+  files <- list.files(paste0(tmp_dir,"/raster", sep = ""), full.names = TRUE, pattern = "r_tmp_*")
+  # if you want to delete all files in the R session temp folder
+  file.remove(files)
+
+  message(paste("Removed: ", length(files), " from ", tmp_dir, collapse="\n"))
 
 }
+
 

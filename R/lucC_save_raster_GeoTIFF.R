@@ -257,6 +257,7 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   # change original by new values - ok
   raster_rows_both <- base::merge(a, b, by = c("x","y","variable")) #, all = TRUE)
+  raster_rows_only <- as.matrix(dplyr::anti_join(as.data.frame(a), as.data.frame(b), by = c("x","y","variable"))) #NEW
   raster_rows_both[,] <- lapply(raster_rows_both, function(x) {as.numeric(as.character(x))}) # remove factor
 
   raster_rows_both <- raster_rows_both %>%
@@ -269,10 +270,11 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   # remove duplicates
   raster_rows_both <- raster_rows_both[!duplicated(raster_rows_both), ]
+  raster_output <- rbind(raster_rows_both,raster_rows_only) #NEW
 
   #raster_rows_both <- dplyr::mutate(raster_rows_both, row = 1:nrow(raster_rows_both))
   #raster_df_update <- reshape2::dcast(raster_rows_both, x + y ~ variable, value.var= 'value', fun.aggregate = mean)
-  raster_df_update <- reshape2::dcast(raster_rows_both, x + y ~ variable, value.var= 'value')
+  raster_df_update <- reshape2::dcast(raster_output, x + y ~ variable, value.var= 'value') # raster_rows_both
   #raster_df_update <- tidyr::spread(raster_rows_both, variable, value, -x, -y)
   # raster_df_update <- raster_rows_both %>%
   #   dplyr::mutate(row = 1:nrow(.)) %>%  # because error "Error: Duplicate identifiers for rows..."
@@ -299,7 +301,7 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
     raster_df_update <- raster_df_update
   }
 
-  rm(raster_rows_both, years_missing, df, dates_result, dates_timeline)
+  rm(raster_rows_both, years_missing, df, dates_result, dates_timeline, raster_rows_only)
   gc()
 
   # pass to complete date, but we prefer leaver only with years
@@ -307,7 +309,7 @@ lucC_save_raster_result <- function(raster_obj = NULL, data_mtx = NULL, timeline
 
   lucC_save_GeoTIFF(raster_obj = raster_obj, data_mtx = raster_df_update, path_raster_folder = path_raster_folder, as_RasterBrick = as_RasterBrick)
 
-  #return(raster_df_update)
+  lucC_remove_TmpFilesRaster()
 
 }
 
